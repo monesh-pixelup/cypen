@@ -1,0 +1,9 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="302.885" height="85.7706" viewBox="0 0 302.885 85.7706" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path id="Chart area" d="M0 51.8442C16.0704 48.273 21.4272 12.5611 41.0687 19.7034C62.4959 21.489 73.2095 50.0586 101.779 46.4874C137.491 42.9162 148.205 -1.72372 176.774 0.061873C205.344 -1.72372 216.057 35.7738 241.056 30.417C262.483 26.8458 266.054 -3.50932 291.052 10.7755C299.98 14.3467 305.337 21.489 301.766 21.489V85.7706H0V51.8442Z" fill="url(#paint0_linear_0_20)"/>
+<defs>
+<linearGradient id="paint0_linear_0_20" x1="151.442" y1="5.02384e-10" x2="151.442" y2="85.7706" gradientUnits="userSpaceOnUse">
+<stop stop-color="#3C1F04"/>
+<stop offset="1" stop-color="#191919"/>
+</linearGradient>
+</defs>
+</svg>

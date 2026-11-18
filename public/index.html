@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cypen · Continuous attack surface testing</title>
+<meta name="description" content="Cypen finds everything you expose, safely tests the latest vulnerabilities, and gives you prioritised steps to remediate.">
+<!-- Social share card. og:image and twitter:image must be full URLs once the site has a domain,
+     e.g. https://YOUR-DOMAIN/cypen-assets/og-image.png. Most platforms ignore a relative path. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cypen">
+<meta property="og:title" content="Cypen · Continuous attack surface testing">
+<meta property="og:description" content="Cypen finds everything you expose, safely tests the latest vulnerabilities, and gives you prioritised steps to remediate.">
+<meta property="og:image" content="cypen-assets/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Cypen. Continuous attack surface testing.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cypen · Continuous attack surface testing">
+<meta name="twitter:description" content="Cypen finds everything you expose, safely tests the latest vulnerabilities, and gives you prioritised steps to remediate.">
+<meta name="twitter:image" content="cypen-assets/og-image.png">
+<link rel="icon" type="image/svg+xml" href="cypen-assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;700&family=Chivo+Mono:wght@400&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="cypen-assets/hero-figma-630-4.webp">
+<style>
+/* Design fonts (from Figma). Roobert and Season Sans are TRIAL builds: buy web licences before this goes public. */
+@font-face{font-family:'Roobert';src:url(cypen-assets/fonts/Roobert-Regular.otf) format('opentype');font-weight:400;font-display:swap}
+@font-face{font-family:'Paper Mono';src:url(cypen-assets/fonts/PaperMono-Regular.otf) format('opentype');font-weight:400;font-display:swap}
+@font-face{font-family:'Paper Mono';src:url(cypen-assets/fonts/PaperMono-Medium.otf) format('opentype');font-weight:500;font-display:swap}
+@font-face{font-family:'Paper Mono';src:url(cypen-assets/fonts/PaperMono-Bold.otf) format('opentype');font-weight:700;font-display:swap}
+@font-face{font-family:'Season Sans';src:url(cypen-assets/fonts/SeasonSans-SemiBold.ttf) format('truetype');font-weight:600;font-display:swap}
+@font-face{font-family:'PP Mori';src:url(cypen-assets/fonts/PPMori-Regular.otf) format('opentype');font-weight:400;font-display:swap}
+/* Desktop layout mirrors Figma "Temp Landing page" (544:1441) on a 1440px stage that JS scales to the viewport.
+   Under 820px the stage drops to a stacked flow layout. */
+:root{--hx:0px;--hs:1;--bg:#111;--ink:#f7f7f7;--mute:rgba(255,255,255,.6);--lilac:#dbabf2;--violet:#ad78d7;--purple:#8320c5;--orange:#9a5819;--green:#64ef8e;--brace:#44444d;
+ --display:'Roobert','PP Mori','Geist',system-ui,sans-serif;--mono:'Paper Mono','Geist Mono',ui-monospace,monospace;--code:'Chivo Mono',ui-monospace,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--bg);color:var(--ink);font-family:Geist,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block}
+.abs{position:absolute}
+h1,h2{font-family:var(--display);font-weight:400}
+
+.page{position:relative;width:1440px;height:calc(3004px + var(--hx));margin:0 auto;zoom:var(--z,1)}
+
+/* ---------- nav ---------- */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:50;background:#111;transition:box-shadow .3s}
+.navbar.scrolled{box-shadow:0 1px 0 rgba(255,255,255,.06)}
+.nav{width:1440px;height:61px;margin:0 auto;padding:0 40px;display:flex;justify-content:space-between;align-items:center;zoom:var(--z,1)}
+[id]{scroll-margin-top:61px}
+.logo{display:flex;align-items:center;gap:4.48px;font:400 26.25px/1.2 var(--display);letter-spacing:-.525px;color:#fff}
+.logo img{width:22.63px;height:22.45px}
+.links{display:flex;align-items:flex-end;gap:26px}
+.links a{font:400 12px/1.2 var(--mono);letter-spacing:-.24px;color:rgba(255,255,255,.8);transition:color .2s}
+.links a:hover{color:#fff}
+.links img{width:9.52px;height:10px;margin-bottom:0}
+
+/* ---------- hero ---------- */
+/* The hero fills the first screen. fit() sets --hx, the stage height added (or removed) so the Problem section starts at the bottom
+   of the window, and --hs, which scales the pattern to cover the taller hero. Everything below shifts by --hx. */
+/* Hero artwork, two layers, both at Figma size and never scaled (so the pattern is the same height on every screen):
+   .wide  the pattern itself (Figma 669:15, 3212px wide), cut from its row 843 down. The frame 630:4 sits on it at 886,534, so it is placed
+          886px left of the frame and starts at the hero's row 309, where the pattern begins. It runs 886px past the stage on each side and
+          552px below the frame: wide windows see more pattern at the sides, tall ones more below.
+   .art   the frame 630:4 itself (pattern + code text, strips, plain top band), on top, exactly over the same pattern. Its last 40px fade out
+          so the overlays do not end on a hard line when the hero is taller than the frame.
+   .5px undoes the hero's own offset so both sit on whole pixels. */
+.hero{position:absolute;left:-.5px;top:61px;width:1441px;height:calc(721px*var(--hs));background:#1a1a1a;overflow:hidden;z-index:0}
+.hero img{position:absolute;max-width:none}
+.hero .wide{left:calc(.5px - 886px);top:309px;width:3213px;height:964px}
+.hero .art{left:.5px;top:0;width:1440px;height:721px;clip-path:inset(309px 0 0 0);--ef:min(var(--bw,0px),60px);
+ -webkit-mask-image:linear-gradient(#000 calc(100% - 40px),transparent),linear-gradient(90deg,transparent,#000 var(--ef),#000 calc(100% - var(--ef)),transparent);
+ mask-image:linear-gradient(#000 calc(100% - 40px),transparent),linear-gradient(90deg,transparent,#000 var(--ef),#000 calc(100% - var(--ef)),transparent);
+ -webkit-mask-composite:source-in;mask-composite:intersect}
+/* The frame's plain top band is the hero's own #1a1a1a; only its two edge strips (28px left, 27px right) carry artwork. They are drawn
+   separately so that on windows wider than the stage they sit at the window edges (--bw), as they sit at the frame edges in Figma.
+   There the code text at the frame's sides also fades out over 60px (--ef) instead of ending on a hard line mid-screen. */
+.hero:before,.hero:after{content:"";position:absolute;top:0;height:309px;background:url(cypen-assets/hero-figma-630-4.webp) 0 0/1440px 721px no-repeat}
+.hero:before{left:calc(.5px - var(--bw,0px));width:28px}
+.hero:after{left:calc(1413.5px + var(--bw,0px));width:27px;background-position:-1413px 0}
+@media(min-width:1180px){.hero{overflow:visible;overflow-y:clip;clip-path:inset(0 calc(-1*var(--bw,0px)))}}
+.hero-copy{position:absolute;left:40px;top:103px;width:1359px;display:flex;justify-content:space-between;align-items:flex-end;z-index:5}
+.hero-copy .l{display:flex;flex-direction:column;gap:24px}
+.hero h1,.hero-copy h1{font-size:72px;line-height:1.1;letter-spacing:-1.44px;width:652.72px;color:#f7f7f7}
+.hero-copy .sub{font:400 16px/24px Geist,sans-serif;color:var(--mute);width:588.38px}
+.hero-copy .r{width:554px;position:relative}
+
+/* ---------- form (button: Figma 473:1003) ---------- */
+.form{display:flex;gap:16px;align-items:flex-end;width:100%}
+.form input{flex:1;min-width:0;height:27px;background:transparent;border:0;border-bottom:1px solid #b1b1b1;color:#fff;font:400 14px/24px Geist,sans-serif;letter-spacing:-.28px;padding:0 0 2px 4px;outline:none;border-radius:0;transition:border-color .2s}
+.form input::placeholder{color:rgba(255,255,255,.6)}
+.form.m input{font-family:var(--mono)}.form.m input::placeholder{color:rgba(255,255,255,.3)}
+.form input:focus{border-color:var(--lilac)}
+.btn{--bh:24px;position:relative;flex:none;width:230px;height:var(--bh);border:0;border-radius:0;background:#b182c2;color:var(--purple);overflow:hidden;
+ font:600 32px/var(--bh) 'Season Sans','Geist',sans-serif;letter-spacing:-.64px;text-transform:uppercase;text-align:left;
+ padding:0 0 0 18.68px;cursor:pointer;white-space:nowrap;transition:background .2s,color .2s}
+.btn:before{content:"";position:absolute;left:0;top:0;bottom:0;width:5.98px;background:#b1b1b1;transition:background .2s}
+.btn:hover{background:var(--purple);color:var(--lilac)}
+.btn:hover:before{background:#fff;animation:cur .7s steps(1,end) infinite}
+.btn:disabled{opacity:.6;cursor:default}
+@keyframes cur{50%{opacity:0}}
+.btn:focus-visible,.form input:focus-visible{outline:2px solid var(--lilac);outline-offset:4px}
+.note{position:absolute;left:0;top:calc(100% + 10px);font:400 13px/1.4 Geist,sans-serif;color:rgba(255,255,255,.45);min-height:18px}
+.note.ok{color:var(--green)}.note.err{color:#ff8a80}
+
+/* ---------- label creature (eyebrow) ---------- */
+.label{display:inline-flex;flex-direction:column;align-items:center;position:relative;margin-bottom:35px}
+.label .bug{width:26px;height:12px;margin-bottom:3px;color:#6a6a74;overflow:visible}
+.bug rect{fill:currentColor;transform-box:fill-box;transform-origin:center}
+.bug .e{fill:#fff;filter:drop-shadow(0 0 2px rgba(255,255,255,.9))}
+.label:before,.label:after{transform-origin:50% 0}
+.label.anim{opacity:0;translate:-160px 0}
+.label.anim.in{opacity:1;translate:0 0}
+.label.anim.crawl{animation:crawl 1.5s steps(12,end) both}
+.label.crawl .bug,.label.crawl span{animation:bob .25s steps(2,end) infinite}
+.label.crawl:before{animation:step .25s steps(2,end) infinite}
+.label.crawl:after{animation:step .25s steps(2,end) -.125s infinite}
+.label.in:not(.crawl){animation:shift 5.5s steps(1,end) 1.5s infinite}
+.label.in:not(.crawl) .bug,.label.in:not(.crawl) span{animation:sway 5.5s steps(1,end) 1.5s infinite}
+.label.in:not(.crawl):before{animation:idleL 5.5s steps(1,end) 1.5s infinite}
+.label.in:not(.crawl):after{animation:idleR 5.5s steps(1,end) 1.5s infinite}
+.label.in .bug .e{animation:blink var(--blink,3.7s) var(--bd,0s) infinite,look var(--look,7.5s) steps(1,end) var(--bd,0s) infinite}
+@keyframes crawl{from{translate:-160px 0;opacity:0}10%{opacity:1}to{translate:0 0;opacity:1}}
+@keyframes bob{50%{transform:translateY(-1.5px)}}
+@keyframes step{50%{transform:translate(3px,-3px) rotate(-14deg)}}
+@keyframes shift{0%,78%,100%{translate:0 0}82%,86%{translate:2px 0}90%,94%{translate:-1px 0}}
+@keyframes sway{0%,78%,86%,94%,100%{transform:none}82%,90%{transform:translateY(-1.5px)}}
+@keyframes idleL{0%,78%,84%,92%,100%{transform:none}80%{transform:translate(3px,-3px) rotate(-14deg)}88%{transform:translate(-3px,-3px) rotate(14deg)}}
+@keyframes idleR{0%,80%,86%,90%,96%,100%{transform:none}83%{transform:translate(3px,-3px) rotate(-14deg)}93%{transform:translate(-3px,-3px) rotate(14deg)}}
+@keyframes blink{0%,43%,49%,90%,93%,96%,100%{transform:none}46%,91.5%,94.5%{transform:scaleY(.1)}}
+@keyframes look{0%,55%,100%{translate:0 0}60%,70%{translate:1px 0}75%,88%{translate:-1px 0}}
+.label span{background:rgba(255,255,255,.1);font:500 14px/17px var(--mono);text-transform:uppercase;letter-spacing:1.82px;padding:2px 3.2px 2px 5px;color:rgba(255,255,255,.7)}
+.label:before,.label:after{position:absolute;bottom:-18px;font:400 15px/1 var(--mono);color:var(--brace)}
+.label:before{content:"{";left:-4px}.label:after{content:"}";right:-4px}
+
+/* heading scramble (kept from v1) */
+.sx .w{display:inline-block;white-space:nowrap}
+.rv .sx .ch{opacity:0;text-align:center;transition:color .55s ease,text-shadow .7s ease}
+.rv .sx.go .ch{display:inline-block}
+.rv .sx .ch.hot{opacity:1;color:var(--c1);-webkit-text-stroke:.05em var(--c2);paint-order:stroke fill;text-shadow:0 0 .32em var(--c2),0 0 .08em var(--c1);transition:none}
+.rv .sx .ch.warm{opacity:1;color:var(--c1);text-shadow:0 0 .28em var(--c2);transition:none}
+.rv .sx .ch.done{opacity:1;color:inherit;text-shadow:0 0 0 transparent}
+
+/* load reveals */
+.rv [data-rv]{opacity:0;transform:translateY(14px);transition:opacity .7s ease var(--d,0s),transform .8s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+.rv [data-rv=fade]{transform:none;transition:opacity 1.4s ease var(--d,0s)}
+.rv [data-rv=down]{transform:translateY(-10px)}
+.rv [data-rv].on{opacity:1;transform:none}
+
+/* ---------- alerts ---------- */
+.alert,.ib,.threat{background:#0e0e0e;border:.92px solid #353535;box-shadow:inset 0 .92px .92px rgba(255,255,255,.05);overflow:hidden}
+.alert{position:absolute;left:0;top:0;width:210.35px;height:calc(101.7px + 19.55px*var(--e,0));transform-origin:0 0;will-change:transform}
+.alert .edge{position:absolute;left:.28px;top:-7.33px;width:2.25px;height:141.14px;opacity:.7}
+.alert .hd{position:absolute;left:12.88px;top:8.93px;display:flex;gap:3px;align-items:center;font:400 13.6px/normal var(--mono);color:#deded8;white-space:nowrap}
+.alert .hd img{width:16.5px;height:16.5px}
+.alert .ds{position:absolute;left:calc(14.9px + 19.4px*var(--e,0));top:54.81px;font:400 11.36px/16px var(--mono);color:rgba(200,200,193,calc(.6 - .1*var(--e,0)));white-space:nowrap}
+.alert .dv{position:absolute;left:-3.6px;top:98.49px;width:212.87px;height:.96px;background:#353535}
+.alert .sv{position:absolute;left:12.88px;top:103.03px;font:400 11.25px/normal var(--mono);text-transform:uppercase;color:rgba(183,183,176,.4)}
+.alert .bd{position:absolute;top:99.07px;height:20.4px;padding:0 8px;display:flex;align-items:center;font:400 11.53px/1 var(--mono);text-transform:uppercase;border:1.035px solid;opacity:var(--e,0);transform:translateY(calc(6px - 6px*var(--e,0)))}
+.alert .bd.c{left:134.03px;background:#3b191c;border-color:#b3474f;color:#ff828a}
+.alert .bd.h{left:161.71px;background:#3b2a19;border-color:#a15a1d;color:#ed790e}
+.slot{position:absolute;pointer-events:none;visibility:hidden}
+.travel{position:absolute;left:0;top:0;width:0;height:0;z-index:3}
+.ib{position:absolute;width:34px;height:29px;opacity:.5}
+.ib img{position:absolute;left:9.1px;top:3.6px;width:14.44px;height:14.44px}
+.threat{position:absolute;width:207.66px;height:154.7px;border-width:1.14px}
+.threat .hd{position:absolute;left:8.6px;top:9px;display:flex;gap:11px;align-items:center;font:700 16.1px/normal var(--mono);color:#b80000}
+.threat .hd img{width:20.1px;height:20.1px}
+.threat .dv{position:absolute;left:.25px;top:36.4px;width:206.27px;height:1.39px;background:#353535}
+.threat ul{position:absolute;left:11.6px;top:67.3px;list-style:none;display:grid;gap:11.15px}
+.threat li{display:flex;gap:11.15px;align-items:center;font:400 12.54px/17px 'Roboto Mono',var(--mono);color:rgba(197,201,189,.6)}
+.threat li img{width:16.08px;height:16.08px}
+
+/* pop-in on scroll (problem section) */
+/* each card drifts in from its own side (data-dir: l, r, b), slightly small and soft, then settles */
+.js .pop{opacity:0;translate:var(--fx,0px) var(--fy,18px);scale:.94;filter:blur(6px);
+ transition:opacity .8s cubic-bezier(.22,.61,.36,1) var(--pd,0s),translate 1.15s cubic-bezier(.16,1,.3,1) var(--pd,0s),scale 1.15s cubic-bezier(.16,1,.3,1) var(--pd,0s),filter .8s ease var(--pd,0s)}
+.js .pop[data-dir=l]{--fx:-44px;--fy:10px}.js .pop[data-dir=r]{--fx:44px;--fy:10px}.js .pop[data-dir=b]{--fy:44px}
+.js .pop.in{opacity:var(--op,1);translate:0 0;scale:1;filter:none}
+.alert{transform:var(--tf)}
+
+/* ---------- problem ---------- */
+.problem{position:absolute;left:39.5px;top:calc(693px + var(--hx));width:1361px;height:718px;background:#111;overflow:hidden;z-index:2}
+.problem .tex{position:absolute;width:1515.87px;height:852.93px;opacity:.05;pointer-events:none}
+.problem .shade{position:absolute;left:271px;top:125.9px;width:851.8px;height:377.7px;background:#111;filter:blur(26.45px)}
+.problem .tile{position:absolute}
+.problem .txt{position:absolute;left:392.61px;top:163px;width:575.77px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.problem .label{margin-bottom:35px}
+.problem h2{font-size:52px;line-height:1.11;letter-spacing:-1.56px;width:761.53px;margin:0 -92.9px;color:#fff}
+.problem p{margin-top:20px;font:400 16px/24px Geist,sans-serif;letter-spacing:-.32px;color:var(--mute);width:446.37px}
+
+/* ---------- solution ---------- */
+.solution{position:absolute;left:-3px;top:calc(1419px + var(--hx));width:1446px;height:801px;background:#111 url(cypen-assets/solution-paper.jpg) 0 0/100% 100%;overflow:hidden;z-index:1}
+.sol-head{position:absolute;left:43px;top:65px;width:1245px;display:flex;justify-content:space-between;align-items:flex-end}
+.sol-head .label{margin-bottom:38px}
+.sol-head h2{font-size:52px;line-height:1.11;letter-spacing:-1.56px;width:575.77px;color:#fff}
+.sol-head p{font:400 16px/24px Geist,sans-serif;letter-spacing:-.32px;color:var(--mute);width:441.13px}
+.ui{position:absolute;left:58px;top:323px;width:1280px;height:454px;scale:var(--uz,1);transform-origin:50% 45%}
+.ui>*{position:absolute;translate:0 0;transform:translate(calc(var(--px,0)*var(--d,0)*1px),calc(var(--py,0)*var(--d,0)*1px))}
+.js .ui>.drift{animation:drift var(--dur,13s) ease-in-out var(--dl,0s) infinite alternate}
+@keyframes drift{0%{translate:0 0}33%{translate:calc(var(--ax,4)*1px) calc(var(--ay,-3)*1px)}66%{translate:calc(var(--ax,4)*-.6px) calc(var(--ay,-3)*.8px)}100%{translate:calc(var(--ax,4)*.3px) calc(var(--ay,-3)*-1px)}}
+.ui .frame{left:298.79px;top:28.77px;width:663.08px;height:367.19px;border:1.017px solid rgba(217,217,217,.11)}
+.ui .dash{left:306px;top:37.77px;width:648.172px;height:349.977px;background:rgba(16,16,15,.2);border:1.017px solid rgba(125,125,121,.2);overflow:hidden}
+/* dashboard window: Figma 556:2803, layer by layer. It is mostly see-through, so the paper and code show through it. */
+.dash *{position:absolute}
+.dash .pn{left:141.82px;top:66.83px;width:485.683px;height:260.697px;overflow:hidden}
+.dash .act{left:0;top:0;width:148.205px;height:57.139px;border:.893px dashed #292929;background:linear-gradient(rgba(27,27,27,.2),rgba(25,25,25,.2));overflow:hidden}
+.dash .act i{opacity:.3}
+.dash .chart{left:0;top:75px;width:330.336px;height:182.131px;opacity:.6;border:.893px solid #292929;background:linear-gradient(rgba(27,27,27,.4),rgba(25,25,25,.4));overflow:hidden}
+.dash .chart i{top:154.46px;height:8.928px;background:#252525}
+.dash .chart b{left:13.4px;top:9.82px;font:400 13.205px/normal var(--mono);color:#deded8;white-space:nowrap}
+.ui .navsel{left:261.23px;top:99.83px;width:94.64px;height:32.14px}
+.ui .aud{left:896.48px;top:237.69px;width:113.71px;height:153.58px}
+.code{font:400 16.257px/1.168 var(--code);white-space:pre;pointer-events:none;color:transparent;-webkit-background-clip:text;background-clip:text}
+.ui .code{opacity:.4;background-image:radial-gradient(farthest-corner,rgba(0,0,0,0) 20%,rgba(0,0,0,.03) 40%,rgba(0,0,0,.11) 60%,rgba(0,0,0,.26) 80%,rgba(0,0,0,.5)),linear-gradient(var(--ga,238.4deg),#151c15 31.5%,#386d33 58.2%,#040404 86.4%)}
+
+/* ---------- CTA + footer ---------- */
+.cta{position:absolute;left:0;top:calc(2216px + var(--hx));width:1440px;height:788px;background:#020202;overflow:hidden;z-index:4}
+.cta .plus{position:absolute;width:15.72px;height:15.72px}
+.cta .code{position:absolute;left:3px;top:329px;font-size:14.23px;opacity:.7;background-image:linear-gradient(239deg,#ad78d7 31.5%,#040404 86.4%);filter:drop-shadow(0 0 4px rgba(205,172,239,.35))}
+.panel{position:absolute;left:40px;top:85px;width:1244px;height:703px;background:#292929 url(cypen-assets/cta-paper.jpg) 0 0/100% 100%;overflow:hidden}
+.panel h2{position:absolute;left:28px;top:33px;width:500.7px;font-size:48px;line-height:1.11;letter-spacing:-1.44px;color:#fff}
+.panel .wm{position:absolute;left:-4px;top:413px;width:1159.02px;height:383.15px;pointer-events:none}
+.panel .fw{position:absolute;left:576px;top:98px;width:554px}
+.panel .row{position:absolute;left:28px;top:364px;width:1102px;display:flex;justify-content:space-between;align-items:center}
+.panel .row p{font:400 14px/1.2 'PP Mori',Geist,sans-serif;letter-spacing:-.28px;color:var(--mute);white-space:nowrap}
+.panel .legal{display:flex;align-items:center;gap:81px}
+.panel .made{display:flex;align-items:center;gap:4px}
+/* underline drawn as a background line: the scramble splits the text into inline blocks, which text-decoration does not cross */
+.panel .made a{color:rgba(255,255,255,.8);padding:3px 0;background:linear-gradient(currentColor,currentColor) 0 100%/100% 1px no-repeat;background-size:0 1px}
+.panel .made a:hover,.panel .made a:focus-visible{background-size:100% 1px}
+.panel .made img{flex:none}
+.social{display:flex;gap:12px}.social a{display:flex;align-items:center;justify-content:center;width:24px;height:24px;color:rgba(255,255,255,.8);transition:color .2s}.social a:hover,.social a:focus-visible{color:#fff}.social svg{width:17px;height:17px;fill:currentColor}
+.foot-links{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+.foot-links a{font:400 12px/1.2 var(--mono);letter-spacing:-.24px;color:rgba(255,255,255,.8);transition:color .2s}
+.foot-links a:hover{color:#fff}
+.foot-links .social a{display:flex;width:24px;height:24px;font:inherit}
+.foot-links .social{display:flex;gap:12px;margin-left:20px}
+.cta .pat{position:absolute;left:0;top:0;width:1440px;height:788px;pointer-events:none}
+.cta .pat-l{position:absolute;left:0;top:378px;width:419px;height:410px;pointer-events:none}
+
+/* ---------- full-bleed backgrounds ----------
+   The stage stops scaling at 1920px wide. These bands sit behind each section and run past the stage edges,
+   so on wider screens the section backgrounds reach the window edges while the content keeps its max width. */
+.bleed{position:absolute;left:-5000px;right:-5000px;z-index:-1;pointer-events:none}
+.bleed.b-hero{top:61px;height:calc(721px*var(--hs));background:#1a1a1a}
+/* one copy of the paper stretched across the whole window (fit() sets --bw, the stage units outside the stage on each side), so it has no seams */
+.bleed.b-sol{left:calc(-3px - var(--bw,0px));right:calc(-3px - var(--bw,0px));top:calc(1419px + var(--hx));height:801px;background:#111 url(cypen-assets/solution-paper.jpg) 0 0/100% 100%}
+@media(min-width:1180px){.solution{background:none}}
+/* CTA: the orange patterns hug the window edges, not the stage edges. The section clips top and bottom only, out to the window edges. */
+@media(min-width:1180px){
+ .cta{overflow:visible;overflow-y:clip;clip-path:inset(0 calc(-1*var(--bw,0px)))}
+ .cta .pat{left:var(--bw,0px)}
+ .cta .pat-l{left:calc(-1*var(--bw,0px))}
+ .cta .code{left:calc(3px - var(--bw,0px))} /* the code strip stays in the gap left of the panel */
+ /* Problem card: same stretch. Its background reaches out by --bw each side; the textures already run past the card and are just clipped
+    less, so the faint pattern fills the wider card. Text, tiles and alerts stay put. */
+ .problem{background:none;overflow:visible;overflow-y:clip;clip-path:inset(0 calc(-1*var(--bw,0px)))}
+ .problem:before{content:"";position:absolute;top:0;bottom:0;left:calc(-1*var(--bw,0px));right:calc(-1*var(--bw,0px));z-index:-1;background:#111;pointer-events:none}
+ /* the panel's paper stretches out by the same amount on each side, so it keeps its margins to the window; its content stays put */
+ .panel{background:none;overflow:visible;overflow-y:clip;clip-path:inset(0 calc(-1*var(--bw,0px)))}
+ /* once the panel has stretched past the stage, its left column (heading, legal row) moves out 28px to the page's 40px text edge,
+    in line with the Solution heading above. Below 1920px the panel edge is at 40px, so the column keeps its 28px inset. */
+ .panel h2{left:calc(28px - min(var(--bw,0px),28px))}
+ /* the row also widens to the right, so the footer links end on the nav links' right edge like the form above them. The orange pattern
+    sits at this height (from stage x 1231 + --bw), so the row trails it by at least 24px and arrives a little later than the form (about 2440px windows). */
+ .panel .row{left:calc(28px - min(var(--bw,0px),28px));width:calc(1102px + min(var(--bw,0px),28px) + min(230px,var(--bw,0px)*1.6,var(--bw,0px) + 37px))}
+ /* the waitlist form slides right as the panel stretches, until its right edge meets the nav links' right edge (stage x 1400, a 230px move).
+    It gets there once the panel is 144px wider per side (about 2300px windows), which keeps at least 28px between the button and the panel edge. */
+ .panel .fw{left:calc(576px + min(230px,var(--bw,0px)*1.6))}
+ .panel:before{content:"";position:absolute;top:0;bottom:0;left:calc(-1*var(--bw,0px));right:calc(-1*var(--bw,0px));z-index:-1;background:#292929 url(cypen-assets/cta-paper.jpg) 0 0/100% 100%;pointer-events:none}
+}
+.bleed.b-cta{top:calc(2216px + var(--hx));height:788px;background:#020202}
+
+/* ---------- tablet + phone: stacked flow layout (below 1180px the 1440 stage would shrink type too far) ---------- */
+@media(max-width:1179px){
+ .bleed{display:none}
+ .js .pop[data-dir]{--fx:0px;--fy:24px} /* stacked layout: cards rise straight up */
+ .page{width:auto;height:auto;zoom:1;padding-top:64px}
+ .nav{width:auto;height:64px;padding:0 32px;zoom:1}
+ [id]{scroll-margin-top:64px}
+ /* hero */
+ .hero-copy{position:relative;left:auto;top:auto;width:auto;max-width:880px;flex-direction:column;align-items:stretch;gap:40px;padding:72px 32px 0}
+ .hero-copy h1{font-size:clamp(40px,8vw,72px);letter-spacing:-.02em;width:auto;max-width:680px}
+ .hero-copy .sub{width:auto;max-width:560px;font-size:17px;line-height:26px}
+ .hero-copy .r{width:auto;max-width:554px;margin-bottom:56px}
+ .hero{position:relative;left:auto;top:auto;width:100%;height:var(--hh,auto);aspect-ratio:1441/470}
+ .hero .wide,.hero:before,.hero:after{display:none}
+ .hero .art{top:auto;bottom:0;left:50%;width:150%;height:auto;translate:-50% 0;clip-path:none;-webkit-mask-image:none;mask-image:none}
+ /* problem */
+ .problem{position:relative;left:auto;top:auto;width:auto;height:auto;padding:104px 32px 96px;margin-top:-1px}
+ /* background: the same faint texture and corner tiles as desktop, re-placed for the stacked layout */
+ .problem .ib,.problem .tex~.tex,.problem .tile[src*=grey]{display:none}
+ .problem .tex{left:50%!important;top:0!important;width:auto;height:100%;min-width:100%;object-fit:cover;translate:-50% 0;opacity:.07}
+ .problem .shade{left:6%;right:6%;top:96px;width:auto;height:330px}
+ .problem .tile[src*=green]{left:0!important;top:22px!important;width:128px!important;height:64px!important}
+ .problem .tile[src*=orange]{left:110px!important;top:70px!important;width:36px!important;height:36px!important}
+ .problem .tile[src*=pink]{left:auto!important;right:0;top:18px!important;width:70px!important;height:92px!important}
+ .problem .txt{position:relative;left:auto;top:auto;width:auto;max-width:720px;margin:0 auto}
+ .problem h2{font-size:clamp(32px,6vw,52px);letter-spacing:-.03em;width:auto;margin:0}
+ .problem p{width:auto;max-width:460px}
+ .problem .mob-row{position:relative;display:flex;flex-wrap:wrap;gap:20px;justify-content:center;align-items:flex-start;margin-top:56px;text-align:left}
+ .problem .slot,.problem .threat{position:relative!important;left:auto!important;top:auto!important;flex:none}
+ /* solution */
+ .solution{position:relative;left:auto;top:auto;width:auto;height:auto;padding:104px 32px 0;background-size:cover;background-position:center}
+ .sol-head{position:relative;left:auto;top:auto;width:auto;flex-direction:column;align-items:flex-start;gap:20px}
+ .sol-head h2{font-size:clamp(32px,6vw,52px);letter-spacing:-.03em;width:auto;max-width:600px}
+ .sol-head p{width:auto;max-width:520px;font-size:17px;line-height:26px}
+ .ui-clip{position:relative;height:calc(420px*var(--mz,.6));margin:56px -32px 0;overflow:hidden}
+ .ui{left:0;top:calc(30px*var(--mz,.6));zoom:var(--mz,.6)}
+ /* small screens: the illustration is shown smaller, so it is made stronger than the desktop design to stay readable */
+ .ui .frame{border-color:rgba(217,217,217,.24)}
+ .ui .dash{background:rgba(16,16,15,.45);border-color:rgba(125,125,121,.45)}
+ .ui .dash img{filter:brightness(1.7)}
+ .ui .dash .act{border-color:#474747}.ui .dash .act i{opacity:.55}
+ .ui .dash .chart{opacity:1;border-color:#3d3d3d}
+ .ui .code{opacity:.7}
+ .ui>svg{filter:brightness(2)}
+ /* cta + footer */
+ .cta{position:relative;left:auto;top:auto;width:auto;height:auto;padding:88px 32px 0}
+ .cta .plus,.cta .code,.cta .pat-l{display:none}
+ .panel{position:relative;left:auto;top:auto;width:auto;height:auto;padding:40px 36px 0;background-size:cover;display:flex;flex-direction:column;z-index:1}
+ .panel h2{position:relative;left:auto;top:auto;width:auto;max-width:520px;font-size:clamp(32px,5.6vw,48px);letter-spacing:-.03em}
+ .panel .fw{position:relative;left:auto;top:auto;width:auto;max-width:554px;margin:40px 0 72px}
+ .panel .row{position:relative;left:auto;top:auto;width:auto;flex-wrap:wrap;gap:16px;order:8}
+ .panel .legal{flex-wrap:wrap;gap:10px 40px}.panel .row p{white-space:normal}.panel .made{white-space:nowrap}
+ .panel .wm{position:relative;left:auto;top:auto;order:9;width:calc(100% + 32px);height:auto;margin:48px 0 0 -16px} /* centred on the card: equal overhang into the padding each side */
+ .cta .pat{left:auto;right:-12%;top:auto;bottom:0;width:90%;height:auto;opacity:.55;z-index:2}
+}
+@media(max-width:639px){
+ .nav{padding:0 16px}
+ .links a:not(:last-child),.links img{display:none}
+ .hero-copy{padding:44px 16px 0;gap:32px}
+ .hero-copy .sub{font-size:16px;line-height:24px}
+ .hero-copy .r{margin-bottom:44px}
+ .form{flex-direction:column;align-items:stretch;gap:22px}.btn{align-self:flex-start}
+ .hero{aspect-ratio:1441/560}
+ .hero .art{width:240%}
+ .problem{padding:112px 16px 72px}
+ .problem .tile[src*=green]{top:14px!important;width:96px!important;height:48px!important}
+ .problem .tile[src*=orange]{left:82px!important;top:50px!important;width:28px!important;height:28px!important}
+ .problem .tile[src*=pink]{top:12px!important;width:52px!important;height:68px!important}
+ .problem h2 br{display:none}
+ .problem .mob-row{flex-direction:column;align-items:center;gap:16px;margin-top:44px}
+ .solution{padding:80px 16px 0}
+ .ui-clip{margin:40px -16px 0}
+ .ui{left:-212px}
+ .cta{padding:72px 16px 0}
+ .panel{padding:28px 20px 0}
+ .panel .fw{margin:32px 0 56px}
+ .panel .wm{width:calc(100% + 16px);margin:40px 0 0 -8px}
+ .foot-links{justify-content:flex-start;width:100%} /* phones: links and icons start on the same left edge as the legal text above */
+ .foot-links .social{margin-left:0}
+ .cta .pat{width:130%;right:-30%}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.js .ui>.drift{animation:none}.js .pop{transition:none!important}}
+</style></head><body>
+
+<!-- NAV (Figma 544:1442), fixed to the top -->
+<div class="navbar"><nav class="nav" aria-label="Main" data-rv="down">
+ <a class="logo" href="#top"><img src="cypen-assets/logo-mark.svg" alt="">Cypen</a>
+<div class="links"><a href="#problem">PROBLEM</a><img src="cypen-assets/plus-violet.svg" alt=""><a href="#solution">SOLUTION</a><img src="cypen-assets/plus-violet.svg" alt=""><a href="#waitlist">JOIN WAITLIST</a></div>
+</nav></div>
+
+<div class="page" id="page">
+ <div class="bleed b-hero" aria-hidden="true"></div><div class="bleed b-sol" aria-hidden="true"></div><div class="bleed b-cta" aria-hidden="true"></div>
+
+<!-- HERO (Figma 544:1454 pattern + 544:1479 copy) -->
+<div class="hero-copy" id="top">
+ <div class="l">
+  <h1>Continuous attack surface testing.</h1>
+  <p class="sub">Cypen finds everything you expose, safely tests the latest vulnerabilities, and gives you prioritised steps to remediate.</p>
+ </div>
+ <div class="r">
+  <form class="form" data-waitlist novalidate>
+   <input type="email" name="email" placeholder="Enter work email" aria-label="Work email" autocomplete="email" required>
+   <button class="btn" type="submit">Join waitlist</button>
+  </form>
+  <p class="note" role="status" data-default=""></p>
+ </div>
+</div>
+<header class="hero" aria-hidden="true">
+ <picture><source media="(min-width:1180px)" srcset="cypen-assets/hero-pattern-wide.webp"><img class="wide" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" width="3213" height="964"></picture>
+ <img class="art" src="cypen-assets/hero-figma-630-4.webp" alt="" width="1440" height="721" fetchpriority="high">
+</header>
+
+<!-- PROBLEM (Figma 544:2422) -->
+<section class="problem" id="problem">
+ <img class="tex" src="cypen-assets/problem-tex.webp" alt="" style="left:-941.8px;top:-63.63px">
+ <img class="tex" src="cypen-assets/problem-tex.webp" alt="" style="left:986.3px;top:-29.6px;rotate:10.85deg">
+ <div class="shade"></div>
+ <img class="tile" src="cypen-assets/tile-pink.png" alt="" style="left:1242px;top:124px;width:116px;height:153px">
+ <img class="tile" src="cypen-assets/tile-orange.png" alt="" style="left:184.5px;top:178.52px;width:59.66px;height:59.66px">
+ <img class="tile" src="cypen-assets/tile-green.png" alt="" style="left:0;top:73px;width:213px;height:106px">
+ <img class="tile" src="cypen-assets/tile-grey.png" alt="" style="left:571px;top:578px;width:100px;height:140px">
+
+ <div class="ib pop" data-at=".08" style="left:446.5px;top:68px;--op:.5"><img src="cypen-assets/warn-sm.svg" alt=""></div>
+ <div class="ib pop" data-at=".24" style="left:916.5px;top:70px;--op:.5"><img src="cypen-assets/error-sm.svg" alt="" style="top:5.2px"></div>
+ <div class="ib pop" data-at=".46" style="left:279.5px;top:489px;--op:.5"><img src="cypen-assets/warn-sm.svg" alt=""></div>
+ <div class="ib pop" data-at=".56" style="left:1088.5px;top:573px;--op:.5"><img src="cypen-assets/warn-sm.svg" alt=""></div>
+
+ <div class="txt">
+  <div class="label"><svg></svg><span>Problem</span></div>
+  <h2>Annual pentests go <br>stale. Scanner alerts pile up.</h2>
+  <p>Teams deploy AI apps without security notice. New zero-days appear. Scanner alerts question exploitability.</p>
+  <div class="mob-row" hidden></div>
+ </div>
+
+ <!-- where the two travelling alerts start (their Figma slots in this frame) -->
+ <div class="slot" data-slot="ex-a" style="left:42.5px;top:105.95px;width:219.46px;height:106.15px"></div>
+ <div class="slot" data-slot="ph-a" style="left:1107.79px;top:197.63px;width:223.21px;height:106.75px"></div>
+
+ <div class="threat pop" data-dir="b" data-at=".38" style="left:624px;top:508px">
+ <div class="hd"><img src="cypen-assets/threat.svg" alt="">Java2SHELL</div><div class="dv"></div>
+ <ul><li><img src="cypen-assets/x-red.svg" alt="">Asset identified</li><li><img src="cypen-assets/x-red.svg" alt="">Vulnerable</li><li><img src="cypen-assets/x-red.svg" alt="">Risk found</li></ul>
+ </div>
+</section>
+
+<!-- SOLUTION (Figma 556:3226 + 556:3223) -->
+<section class="solution" id="solution">
+ <div class="sol-head">
+  <div>
+   <div class="label"><svg></svg><span>Solution</span></div>
+   <h2>Continuously test your exposure as it changes.</h2>
+  </div>
+  <p data-rv="up">Find internet-facing systems you didn’t know about. Test them for new zero-day exploits and get proof of what to fix first.</p>
+ </div>
+ <div class="ui-clip"><div class="ui" aria-hidden="true">
+  <div class="frame drift" style="--d:3;--dur:17s;--ax:3;--ay:2"></div>
+  <div class="code drift" data-code="full" style="left:5.13px;top:-70.54px;font-size:19.711px;--ga:238.39deg;--d:9;--dur:15s;--ax:-5;--ay:4;--dl:-3s"></div>
+  <div class="code drift" data-code="full" style="left:898.15px;top:137.66px;font-size:17.403px;--ga:239.25deg;--d:9;--dur:16s;--ax:5;--ay:-4;--dl:-7s"></div>
+  <svg class="drift" style="left:963.09px;top:28.75px;--d:12;--dur:11s;--ax:3;--ay:-4" width="5.41" height="20.31" viewBox="0 0 6.08 22.8"><circle cx="3.04" cy="3.04" r="3.04" fill="#1b1b1b"/><circle cx="3.04" cy="11.4" r="2.47" fill="none" stroke="#1b1b1b" stroke-width="1.14"/><circle cx="3.04" cy="19.77" r="2.47" fill="none" stroke="#1b1b1b" stroke-width="1.14"/></svg>
+  <svg class="drift" style="left:858.47px;top:398.96px;--d:12;--dur:12s;--ax:-4;--ay:3;--dl:-2s" width="27.76" height="5.41" viewBox="0 0 31.17 6.08"><circle cx="3.04" cy="3.04" r="3.04" fill="#1b1b1b"/><circle cx="11.4" cy="3.04" r="3.04" fill="#1b1b1b"/><circle cx="19.77" cy="3.04" r="2.47" fill="none" stroke="#1b1b1b" stroke-width="1.14"/><circle cx="28.13" cy="3.04" r="2.47" fill="none" stroke="#1b1b1b" stroke-width="1.14"/></svg>
+  <svg class="drift" style="left:289.71px;top:158.84px;--d:12;--dur:13s;--ax:3;--ay:4;--dl:-5s" width="5.41" height="27.76" viewBox="0 0 6.08 31.17"><circle cx="3.04" cy="3.04" r="3.04" fill="#1b1b1b"/><circle cx="3.04" cy="11.4" r="3.04" fill="#1b1b1b"/><circle cx="3.04" cy="19.77" r="2.47" fill="none" stroke="#1b1b1b" stroke-width="1.14"/><circle cx="3.04" cy="28.13" r="2.47" fill="none" stroke="#1b1b1b" stroke-width="1.14"/></svg>
+  <svg class="drift" style="left:225.63px;top:283.99px;--d:12;--dur:14s;--ax:-3;--ay:-3;--dl:-6s" width="27.76" height="5.41" viewBox="0 0 31.17 6.08"><circle cx="28.13" cy="3.04" r="3.04" fill="#1b1b1b"/><circle cx="19.77" cy="3.04" r="2.47" fill="none" stroke="#1b1b1b" stroke-width="1.14"/><circle cx="11.4" cy="3.04" r="2.47" fill="none" stroke="#1b1b1b" stroke-width="1.14"/><circle cx="3.04" cy="3.04" r="2.47" fill="none" stroke="#1b1b1b" stroke-width="1.14"/></svg>
+  <div class="dash drift" style="--d:5;--dur:19s;--ax:-3;--ay:-2">
+   <img src="cypen-assets/dash/window-controls.svg" alt="" style="left:-1.02px;top:-1.02px;width:648.172px;height:41.069px">
+   <img src="cypen-assets/dash/sidebar.svg" alt="" style="left:-1.02px;top:40.05px;width:126.777px;height:308.908px">
+   <div class="pn">
+    <div class="act">
+     <i style="left:16.97px;top:29.48px;width:7.142px;height:12.499px;background:#6a6a6a"></i>
+     <i style="left:27.69px;top:22.33px;width:7.142px;height:19.642px;background:#636363"></i>
+     <i style="left:38.39px;top:15.19px;width:7.142px;height:26.784px;background:#5c5c5c"></i>
+     <i style="left:59.83px;top:15.19px;width:53.568px;height:8.928px;background:linear-gradient(to left,#1a1a1a,#4e4c4c)"></i>
+     <i style="left:59.83px;top:33.04px;width:37.498px;height:7.142px;background:#272727"></i>
+    </div>
+    <img src="cypen-assets/dash/audience-summary.svg" alt="" style="left:166.08px;top:0;width:149.99px;height:57.139px">
+    <div class="chart">
+     <img src="cypen-assets/dash/chart-area.svg" alt="" style="left:13.4px;top:52.62px;width:302.885px;height:85.771px">
+     <img src="cypen-assets/dash/chart-curve.svg" alt="" style="left:12.43px;top:51.64px;width:304.848px;height:53.809px">
+     <i style="left:15.19px;width:103.565px"></i><i style="left:158.03px;width:137.491px"></i>
+     <b>/api/users</b>
+    </div>
+    <img src="cypen-assets/dash/growth-summary.svg" alt="" style="left:327.22px;top:1.34px;width:151.776px;height:57.139px">
+   </div>
+  </div>
+  <img class="navsel drift" src="cypen-assets/nav-selected.png" alt="" style="--d:14;--dur:10s;--ax:-6;--ay:3;--dl:-4s">
+  <img class="aud drift" src="cypen-assets/audience.svg" alt="" style="--d:16;--dur:12s;--ax:6;--ay:-4;--dl:-1s">
+  <div class="slot drift" data-slot="ex-b" style="left:64.86px;top:170.04px;width:187.33px;height:107.98px;--d:18;--dur:11s;--ax:-5;--ay:5;--dl:-2s"></div>
+  <div class="slot drift" data-slot="ph-b" style="left:979.54px;top:82.73px;width:187.33px;height:107.98px;--d:18;--dur:12s;--ax:5;--ay:-5;--dl:-6s"></div>
+ </div></div>
+</section>
+
+<!-- alerts that pop up in Problem and travel down into Solution (gain a severity row on arrival) -->
+<div class="travel" aria-hidden="true">
+ <div class="alert pop" data-dir="l" data-at=".14" data-from="ex-a" data-to="ex-b" data-arc="-1">
+  <img class="edge" src="cypen-assets/alert-edge.png" alt="">
+  <div class="hd"><img src="cypen-assets/warn.svg" alt="">SQL Injection</div>
+  <div class="ds">Database exfiltration<br>Username parameter</div>
+  <div class="dv"></div><div class="sv">Severity</div><div class="bd c">Critical</div>
+ </div>
+ <div class="alert pop" data-dir="r" data-at=".3" data-from="ph-a" data-to="ph-b" data-arc="1">
+  <img class="edge" src="cypen-assets/alert-edge.png" alt="">
+  <div class="hd"><img src="cypen-assets/warn.svg" alt="">Access Control</div>
+  <div class="ds">IDOR in User ID<br>Account takeover</div>
+  <div class="dv"></div><div class="sv">Severity</div><div class="bd h">High</div>
+ </div>
+</div>
+
+<!-- CTA + FOOTER (Figma 567:3282) -->
+<section class="cta" id="waitlist">
+ <img class="pat-l" src="cypen-assets/cta-pattern-left.webp" alt="" aria-hidden="true" width="419" height="410" loading="lazy">
+ <div class="code" data-code="full" aria-hidden="true"></div>
+ <img class="plus" src="cypen-assets/plus-violet.svg" alt="" style="left:76.55px;top:42.91px">
+ <img class="plus" src="cypen-assets/plus-violet.svg" alt="" style="left:64px;top:373px">
+ <img class="plus" src="cypen-assets/plus-violet.svg" alt="" style="left:calc(1382px + var(--bw,0px));top:245px">
+ <div class="panel">
+  <h2>Get proof of what attackers can exploit.</h2>
+  <img class="wm" src="cypen-assets/wordmark.svg" alt="" aria-hidden="true">
+  <div class="fw">
+   <form class="form m" data-waitlist novalidate>
+    <input type="email" name="email" placeholder="Enter work email" aria-label="Work email" autocomplete="email" required>
+    <button class="btn" type="submit">Join waitlist</button>
+   </form>
+   <p class="note" role="status" data-default=""></p>
+  </div>
+  <footer class="row">
+   <div class="legal">
+    <p>© 2026 Agentic Security Pty Ltd (ABN 42 701 054 506). All rights reserved.</p>
+    <p class="made">Made with <img src="cypen-assets/made-heart.svg" alt="love" width="14.132" height="13.405"> by <a href="https://www.pixeluplabs.com/" target="_blank" rel="noopener">PIXELUPLABS</a> <img src="cypen-assets/pixelup-mark.svg" alt="" width="13.429" height="11.63"></p>
+   </div>
+   <div class="foot-links">
+    <a href="/privacy">PRIVACY POLICY</a>
+    <a href="/terms.pdf">TERMS</a>
+    <a href="/trust">TRUST CENTRE</a>
+    <a href="mailto:info@cypen.ai">INFO@CYPEN.AI</a>
+    <!-- Social icons: Font Awesome Free 6.7.2 (linkedin-in, x-twitter), CC BY 4.0, https://fontawesome.com/license/free -->
+    <div class="social"><a href="https://www.linkedin.com/company/cypen/" target="_blank" rel="noopener" aria-label="Cypen on LinkedIn"><svg viewBox="0 0 448 512" aria-hidden="true"><path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"/></svg></a><a href="https://x.com/cypen" target="_blank" rel="noopener" aria-label="Cypen on X"><svg viewBox="0 0 512 512" aria-hidden="true"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg></a></div>
+   </div>
+  </footer>
+ </div>
+ <img class="pat" src="cypen-assets/cta-pattern.webp" alt="" aria-hidden="true" width="1440" height="788" loading="lazy">
+</section>
+
+</div>
+
+<script>
+document.documentElement.classList.add('js');
+const REDUCE=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const page=document.getElementById('page');
+const isMob=()=>innerWidth<1180; // below this the page uses the stacked layout
+let Z=1;
+
+/* ---------- fit the 1440 stage to the viewport ---------- */
+function fit(){
+ const w=document.documentElement.clientWidth;
+ Z=isMob()?1:Math.min(w/1440,1.3334);
+ const de=document.documentElement.style;
+ de.setProperty('--z',Z);
+ de.setProperty('--bw',(isMob()?0:Math.max(0,(w/Z-1440)/2)).toFixed(1)+'px');
+ // hero = 100vh. Stage layout: the Problem section (Figma top 693) moves to the bottom edge of the window.
+ const hx=isMob()?0:Math.max(-110,Math.min(210,innerHeight/Z-693)); // capped at 210: on big screens the pattern stops growing (about 530px of it at stage scale) and the Problem section shows below
+ const hs=1+Math.max(hx,0)/721,bw=isMob()?0:Math.max(0,(w/Z-1440)/2);
+ de.setProperty('--hx',hx.toFixed(1)+'px');de.setProperty('--hs',hs.toFixed(4));
+ // Stacked layout: the pattern under the copy grows to reach the bottom of the window, up to the height of its artwork.
+ const hc=document.querySelector('.hero-copy');
+ if(isMob()&&hc){const ph=w<640,base=w*(ph?560:470)/1441,art=w*(ph?2.4:1.5)*721/1441*.57,left=innerHeight-(hc.getBoundingClientRect().bottom+scrollY);
+  de.setProperty('--hh',Math.max(base,Math.min(left,art)).toFixed(1)+'px')}else de.removeProperty('--hh');
+ if(isMob())document.documentElement.style.setProperty('--mz',(w<640?w/830:Math.min(w,1100)/1280).toFixed(4)); // phones: crop in on the dashboard
+ // stacked layout: the problem alerts sit in a row under the copy; stage layout: back at their Figma spots
+ const row=document.querySelector('.mob-row'),prob=document.querySelector('.problem');
+ if(row){const items=document.querySelectorAll('.problem [data-slot],.problem .threat');
+  row.hidden=!isMob();items.forEach(e=>(isMob()?row:prob).appendChild(e))}
+}
+fit();addEventListener('resize',fit);addEventListener('load',fit);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+const navbar=document.querySelector('.navbar');
+const onScroll=()=>navbar.classList.toggle('scrolled',scrollY>4);onScroll();addEventListener('scroll',onScroll,{passive:true});
+
+/* ---------- code snippets ---------- */
+const CODE=`def detect_threat(network):
+    for node in network:
+        if node.risk_score > 0.8:
+            flag(node)
+            isolate(node)
+            return "THREAT CONTAINED"
+
+    return "SYSTEM SECURE"
+def analyze_attack_surface(assets):
+    findings = []
+
+    for asset in assets:
+        result = scan(asset)
+
+        if result.is_exploitable:
+            findings.append({
+                "target": asset.id,
+                "severity": result.severity,
+                "status": "DETECTED"
+            })
+
+    return prioritize(findings)`;
+document.querySelectorAll('[data-code]').forEach(e=>e.textContent=CODE);
+
+
+/* ---------- load reveals + heading scramble + label creatures (kept from v1) ---------- */
+(()=>{
+ if(REDUCE)return;
+ document.documentElement.classList.add('rv');
+ const set=(sel,type,base=0,step=0)=>document.querySelectorAll(sel).forEach((e,i)=>{e.dataset.rv=type;e.style.setProperty('--d',(base+i*step).toFixed(2)+'s')});
+ set('.nav','down',.1);set('.hero-copy .sub','up',.75);set('.hero-copy .r','up',.9);set('.hero img','fade',.2);
+ set('.problem p','up',.35);set('.sol-head p','up',.3);set('.panel .fw','up',.25);set('.panel .row','up',.35);set('.panel .wm','fade',.2);set('.cta .plus','fade',.3,.15);
+ const PAL=[['#dbabf2','#8320c5'],['#dbabf2','#8320c5'],['#dbabf2','#8320c5'],['#dbabf2','#8320c5']];
+ const GL='abcdefghknopqrstuvxyz0123456789|*<>[]{}/+',pick=()=>GL[Math.random()*GL.length|0];
+ const fontsReady=document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve();
+ const prep=h=>{const t=h.innerHTML.replace(/<br\s*\/?>/gi,' ¶ ').replace(/<[^>]+>/g,'').trim().split(/\s+/);
+  h.setAttribute('aria-label',t.filter(w=>w!=='¶').join(' '));h.classList.add('sx');let wi=0;
+  h.innerHTML=t.map(w=>w==='¶'?'<br>':(()=>{const p=PAL[wi++%4];return `<span class="w" aria-hidden="true" style="--c1:${p[0]};--c2:${p[1]}">${[...w].map(c=>`<span class="ch" data-c="${c}">${c}</span>`).join('')}</span>`})()).join(' ')};
+ const play=(h,wordStep,delay,perLine)=>fontsReady.then(()=>{
+  const fs=parseFloat(getComputedStyle(h).fontSize);
+  h.querySelectorAll('.ch').forEach(c=>c.style.width=(c.getBoundingClientRect().width/Z/fs).toFixed(4)+'em');
+  h.classList.add('go');
+  // perLine: restart the word count on each visual line, so every line scrambles at the same time
+  const ws=[...h.querySelectorAll('.w')],idx=[];let top=null,n=0;
+  ws.forEach(w=>{const t=w.offsetTop;if(perLine&&top!==null&&t>top+2)n=0;top=t;idx.push(n++)});
+  ws.forEach((w,k)=>{const wi=idx[k];[...w.children].forEach((c,j)=>setTimeout(()=>{
+   c.textContent=pick();c.classList.remove('warm','done');c.classList.add('hot');const id=setInterval(()=>c.textContent=pick(),60);
+   setTimeout(()=>{clearInterval(id);c.textContent=c.dataset.c;c.classList.replace('hot','warm');
+    setTimeout(()=>c.classList.replace('warm','done'),Math.random()<.3?450+Math.random()*550:110+Math.random()*170)},380+Math.random()*140);
+  },delay+wi*wordStep+j*28))});
+ });
+ const h1=document.querySelector('.hero-copy h1');prep(h1);play(h1,240,250,true);
+ // nav links: the same scramble, once on load (one link after another) and again each time a link is hovered
+ document.querySelectorAll('.nav .links a').forEach((a,i)=>{
+  prep(a);play(a,90,450+i*160);
+  let busy=true;setTimeout(()=>busy=false,1600+i*160);
+  a.addEventListener('pointerenter',()=>{if(busy)return;busy=true;play(a,70,0);setTimeout(()=>busy=false,1000)});
+ });
+ // footer credit link: the same scramble, the first time it scrolls into view and again on hover
+ const cred=document.querySelector('.panel .made a');
+ if(cred){prep(cred);let busy=true;const run=()=>{busy=true;play(cred,70,0);setTimeout(()=>busy=false,1000)};
+  const cio=new IntersectionObserver(es=>{if(es[0].isIntersecting){cio.disconnect();run()}},{threshold:.6});cio.observe(cred);
+  cred.addEventListener('pointerenter',()=>{if(!busy)run()})}
+ const hs=[...document.querySelectorAll('.problem h2,.sol-head h2,.panel h2')];hs.forEach(prep);
+ const hio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){hio.unobserve(e.target);play(e.target,110,100)}}),{threshold:.6});
+ hs.forEach(h=>hio.observe(h));
+ const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}}),{threshold:.12});
+ document.querySelectorAll('[data-rv]').forEach(e=>io.observe(e));
+})();
+
+(()=>{
+ const BASE=[0,4,8,12,16,20,24].map(x=>[x,8]);
+ const FACES=[[[12,0],[8,4,'e'],[12,4],[16,4,'e']],[[4,0],[20,0],[8,4,'e'],[12,4],[16,4,'e']],[[12,0],[4,4,'e'],[8,4],[12,4],[16,4],[20,4,'e']],
+  [[8,0],[12,0],[16,0],[8,4,'e'],[16,4,'e']],[[8,0,'e'],[16,0,'e'],[4,4],[8,4],[12,4],[16,4],[20,4]],[[0,4],[24,4],[8,4,'e'],[16,4,'e'],[12,0]]].sort(()=>Math.random()-.5);
+ const rnd=(a,b)=>(a+Math.random()*(b-a)).toFixed(2)+'s';
+ const G='#%&$@*+=<>/[]{}01';
+ const decode=el=>{const t=el.dataset.t;let f=0;const id=setInterval(()=>{const done=Math.floor(++f/3);
+  el.textContent=[...t].map((c,i)=>i<done||c===' '?c:G[Math.random()*G.length|0]).join('');if(done>=t.length){el.textContent=t;clearInterval(id)}},40)};
+ const io=REDUCE?null:new IntersectionObserver(es=>es.forEach(e=>{const l=e.target.previousElementSibling;if(!e.isIntersecting){if(e.boundingClientRect.bottom<0){io.unobserve(e.target);l.classList.add('in')}return}io.unobserve(e.target);
+  l.classList.add('in','crawl');setTimeout(()=>l.classList.remove('crawl'),1500);setTimeout(()=>decode(l.querySelector('span')),1350)}),{threshold:.6});
+ document.querySelectorAll('.label').forEach((l,n)=>{
+  const P=FACES[n%FACES.length].concat(BASE);
+  l.style.setProperty('--blink',rnd(2.8,5.2));l.style.setProperty('--bd',rnd(-4,0));l.style.setProperty('--look',rnd(5.5,10));
+  l.querySelector('svg').outerHTML=`<svg class="bug" viewBox="0 -2 26 12" aria-hidden="true">${P.map(([x,y,k],i)=>`<rect class="${k||''}" x="${x}" y="${y}" width="2" height="2" style="--i:${i}"/>`).join('')}</svg>`;
+  const sp=l.querySelector('span');sp.dataset.t=sp.textContent;
+  if(io&&l.nextElementSibling){l.classList.add('anim');io.observe(l.nextElementSibling)}
+ });
+})();
+
+/* ---------- waitlist form (HubSpot) ----------
+   The three __HUBSPOT_*__ placeholders below are replaced at Docker build time from the
+   HUBSPOT_PORTAL_ID / HUBSPOT_FORM_GUID / HUBSPOT_FORMS_HOST build arguments.
+   Public submissions go to
+   https://{host}/submissions/v3/integration/submit/{portalId}/{formGuid} (no secret needed).
+   A private-app token must stay on a server route, never in this file. */
+const HUBSPOT={portalId:'__HUBSPOT_PORTAL_ID__',formGuid:'__HUBSPOT_FORM_GUID__',host:'__HUBSPOT_FORMS_HOST__'};
+document.querySelectorAll('[data-waitlist]').forEach(f=>{
+ const note=f.nextElementSibling,input=f.email,btn=f.querySelector('button');
+ const say=(t,c)=>{note.textContent=t;note.className='note'+(c?' '+c:'')};
+ f.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const v=input.value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){say('Enter a valid work email.','err');input.focus();return}
+  btn.disabled=true;
+  try{
+   if(HUBSPOT.portalId){
+    const r=await fetch(`https://${HUBSPOT.host||'api.hsforms.com'}/submissions/v3/integration/submit/${HUBSPOT.portalId}/${HUBSPOT.formGuid}`,{method:'POST',headers:{'Content-Type':'application/json'},
+     body:JSON.stringify({fields:[{name:'email',value:v}],context:{pageUri:location.href,pageName:document.title}})});
+    if(!r.ok)throw new Error(r.status);
+   }else console.warn('Waitlist form is not connected to HubSpot yet; nothing was sent.');
+   say('You’re on the waitlist. We’ll email you when Cypen launches.','ok');f.reset();
+  }catch(err){say('Something went wrong. Please try again.','err')}
+  btn.disabled=false;
+ });
+ input.addEventListener('input',()=>{if(note.classList.contains('err'))say('','')});
+});
+
+/* ---------- scroll-driven: problem pop-ins, travelling alerts, solution UI zoom + parallax ---------- */
+(()=>{
+ const prob=document.querySelector('.problem'),sol=document.querySelector('.solution'),ui=document.querySelector('.ui');
+ const pops=[...document.querySelectorAll('.pop')];
+ const slot=k=>document.querySelector(`[data-slot="${k}"]`);
+ const movers=[...document.querySelectorAll('.travel .alert')].map(el=>({el,a:slot(el.dataset.from),b:slot(el.dataset.to),arc:+el.dataset.arc,t:0}));
+ const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,smooth=(a,b,v)=>{const t=clamp((v-a)/(b-a));return t*t*(3-2*t)};
+ let px=0,py=0,tx=0,ty=0;
+ sol.addEventListener('pointermove',e=>{const r=sol.getBoundingClientRect();tx=((e.clientX-r.left)/r.width-.5)*2;ty=((e.clientY-r.top)/r.height-.5)*2});
+ sol.addEventListener('pointerleave',()=>{tx=ty=0});
+ // stage coordinates of an element (undoes the page zoom)
+ const pr=()=>page.getBoundingClientRect();
+ const pos=(el,P)=>{const r=el.getBoundingClientRect();return{x:(r.left-P.left)/Z,y:(r.top-P.top)/Z,w:r.width/Z}};
+ let first=true;
+ // 1. problem cards.
+ //    Desktop: scrolljacked. When the section reaches the top of the window the page is held there; scrolling then
+ //    brings the three cards in one at a time (left, right, bottom). After the third, the page scrolls on. Plays once.
+ //    Stacked layout (tablet/phone): no hold; each card appears as its own spot scrolls into view.
+ const byAt=(a,b)=>a.dataset.at-b.dataset.at;
+ const cards=pops.filter(e=>e.dataset.dir).sort(byAt),icons=pops.filter(e=>!e.dataset.dir).sort(byAt);
+ let step=0,done=false,locked=false,acc=0,last=0,idle=0,lastY=scrollY,touchY=0;
+ const show=(el,d=0)=>{el.style.setProperty('--pd',d+'s');el.classList.add('in')};
+ const finish=()=>{pops.forEach(e=>show(e));step=cards.length;done=true;locked=false;clearTimeout(idle)};
+ if(REDUCE)finish();
+ // scroll position where the section sits under the nav (nudged down a little on short windows so the bottom card is in view)
+ const pinY=()=>Math.round(scrollY+prob.getBoundingClientRect().top-61*Z+Math.max(0,Math.min(718-(innerHeight/Z-61),70))*Z);
+ const hold=()=>scrollTo({top:pinY(),behavior:'instant'});
+ const advance=()=>{
+  if(step>=cards.length)return;
+  show(cards[step]);if(icons[step])show(icons[step],.25);
+  step++;acc=0;last=performance.now();clearTimeout(idle);
+  if(step>=cards.length){icons.slice(step).forEach((e,i)=>show(e,.35+i*.15));setTimeout(()=>{done=true;locked=false},750)}
+  else idle=setTimeout(advance,1600); // nobody gets stuck: with no scroll input the next card comes by itself
+ };
+ const lock=()=>{if(locked||done||isMob())return;locked=true;acc=0;last=performance.now()-200;hold();clearTimeout(idle);idle=setTimeout(advance,1600)};
+ const release=()=>{locked=false;clearTimeout(idle)};
+ // scroll input while the page is held: down brings the next card, up lets go
+ const push=d=>{
+  if(step>=cards.length)return;
+  if(d<0){acc=Math.min(acc,0)+d;if(acc<-40)release();return}
+  acc=Math.max(acc,0)+d;
+  if(acc>=50&&performance.now()-last>=450)advance();
+ };
+ addEventListener('wheel',e=>{
+  if(done||isMob())return;
+  const d=e.deltaMode?e.deltaY*40:e.deltaY;
+  if(locked){e.preventDefault();push(d);return}
+  const y=pinY();if(d>0&&scrollY<y&&scrollY+d>=y){e.preventDefault();lock()}
+ },{passive:false});
+ addEventListener('touchstart',e=>{touchY=e.touches[0].clientY},{passive:true});
+ addEventListener('touchmove',e=>{if(!locked)return;if(e.cancelable)e.preventDefault();const y=e.touches[0].clientY;push((touchY-y)*1.5);touchY=y},{passive:false});
+ addEventListener('keydown',e=>{
+  if(!locked)return;
+  if([' ','PageDown','ArrowDown','End'].includes(e.key)){e.preventDefault();if(performance.now()-last>=300)advance()}
+  else if(['PageUp','ArrowUp','Home'].includes(e.key)&&step<cards.length)release();
+ });
+ addEventListener('scroll',()=>{
+  const y=scrollY;
+  if(locked){if(Math.abs(y-pinY())>1)hold()}
+  else if(!done&&!isMob()&&y>lastY){const p=pinY();
+   if(y>p+innerHeight*.6)finish();   // landed far below (reload, restored scroll): just show them
+   else if(y>=p)lock();              // scrolled onto the section (scrollbar, keys, touch): catch and hold
+  }
+  lastY=scrollY;
+ },{passive:true});
+ // nav links that jump past the section skip the hold
+ document.querySelectorAll('a[href^="#"]').forEach(l=>l.addEventListener('click',()=>{if(!done&&!['#top','#problem'].includes(l.getAttribute('href')))finish()}));
+ const reveal=vh=>{
+  if(done||!isMob()||scrollY<8)return;
+  const hit=pops.filter(el=>{if(el.classList.contains('in'))return false;const b=(el.dataset.from?slot(el.dataset.from):el).getBoundingClientRect();return b.top+b.height/2<vh*.8}).sort(byAt);
+  hit.forEach((el,i)=>show(el,i*.16));
+ };
+ function frame(){
+  const vh=innerHeight,P=pr(),r=prob.getBoundingClientRect();
+  reveal(vh);
+  // 2. alerts travel from their Problem slot to their Solution slot
+  const s=sol.getBoundingClientRect();
+  let target=isMob()?0:clamp(((vh*.5)-(r.top+r.height*.42))/((s.top+s.height*.6)-(r.top+r.height*.42)));
+  if(!done&&!isMob())target=0; // the alerts stay in their Problem slots until the card sequence has played
+  if(REDUCE)target=target>.5?1:0; // no travel animation: alerts just sit in whichever section is in view
+  movers.forEach(m=>{
+   m.t+=first||REDUCE?(target-m.t):(target-m.t)*.09;
+   const t=ease(clamp(m.t)),A=pos(m.a,P),B=pos(m.b,P);
+   const sc=(A.w+(B.w-A.w)*t)/210.35,arc=Math.sin(Math.PI*t);
+   const x=A.x+(B.x-A.x)*t+m.arc*arc*60,y=A.y+(B.y-A.y)*t;
+   m.el.style.setProperty('--tf',`translate(${x.toFixed(2)}px,${y.toFixed(2)}px) scale(${sc.toFixed(4)}) rotate(${(m.arc*arc*2.2).toFixed(2)}deg)`);
+   m.el.style.setProperty('--e',smooth(.72,.98,m.t).toFixed(3));
+   m.el.style.boxShadow=arc>.02?`inset 0 .92px .92px rgba(255,255,255,.05),0 ${(24*arc).toFixed(1)}px ${(48*arc).toFixed(1)}px rgba(0,0,0,${(.55*arc).toFixed(2)})`:'';
+   if(m.t>.02){m.el.classList.add('in');m.el.style.setProperty('--pd','0s')}
+  });
+  // 3. solution UI: very slow zoom across the section + slight pointer parallax
+  const q=clamp((vh-s.top)/(vh+s.height));
+  ui.style.setProperty('--uz',REDUCE?1:(.985+q*.03).toFixed(4));
+  px+=(tx-px)*.06;py+=(ty-py)*.06;
+  ui.style.setProperty('--px',(-px*.6).toFixed(3));ui.style.setProperty('--py',(-py*.6).toFixed(3));
+  first=false;requestAnimationFrame(frame);
+ }
+ requestAnimationFrame(frame);
+})();
+</script>
+</body></html>

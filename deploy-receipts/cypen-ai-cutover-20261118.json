@@ -1,0 +1,89 @@
+{
+  "date": "2026-11-18",
+  "surface": "https://cypen.ai production cutover to cypen-waitlist-website",
+  "owner_request": "Deploy cypen-waitlist-website to cypen.ai, purple-only scramble colours, updated popup copy, HubSpot waitlist form wiring via env vars",
+  "repository": {
+    "repo": "cypen-ai/cypen-waitlist-website",
+    "branch": "main",
+    "commit": "7401023ddd6f58ae02941f9601c0c8fbccb1df48"
+  },
+  "app_platform": {
+    "app_id": "14868dd5-2c53-4778-a96c-970582d038ad",
+    "app_name": "cypen-main-website",
+    "note": "Resource identity retained (domains, aliases, alerts); only source changed",
+    "source_before": "cypen-ai/cypen-main-website@main",
+    "source_after": "cypen-ai/cypen-waitlist-website@main",
+    "deploy_on_push": false,
+    "http_port": 80,
+    "health_check": {
+      "path": "/healthz",
+      "port": 80
+    },
+    "build_time_envs_public": [
+      "HUBSPOT_PORTAL_ID=443548264",
+      "HUBSPOT_FORM_GUID=203cd2ab-161b-4dcf-87d7-eb3a3370df7d",
+      "HUBSPOT_FORMS_HOST=api-ap1.hsforms.com"
+    ],
+    "deployment_id": "2f43f78a-df6b-4320-a14d-5338c38e2220",
+    "deployment_phase": "ACTIVE"
+  },
+  "code_changes": [
+    "Scramble palette purple-only #dbabf2/#8320c5 (nav, headings, CTAs)",
+    "Nav separators plus-orange.svg -> plus-violet.svg",
+    "Popups: SQL Injection / Database exfiltration / Username parameter; Broken Access Control / IDOR in User ID / Account takeover; Java2SHELL / Asset identified / Vulnerable / Risk found; visuals unchanged",
+    "Hero + footer waitlist forms POST to HubSpot Forms API; IDs injected into out/index.html at Docker build from build args"
+  ],
+  "verification": {
+    "https://cypen.ai/": "title 'Cypen \u00b7 Continuous attack surface testing', new copy present, old copy absent, PAL all #dbabf2/#8320c5, HUBSPOT const contains portal 443548264 / form 203cd2ab-161b-4dcf-87d7-eb3a3370df7d / host api-ap1.hsforms.com",
+    "https://www.cypen.ai/": "301 -> https://cypen.ai/",
+    "https://cypen.ai/healthz": "'live', 200",
+    "https://agenticsecurity.au/": "200 via alias domain",
+    "local_browser_dom": "2 data-waitlist forms, violet nav separators, purple-only scramble computed vars, popup texts asserted before push"
+  },
+  "rollback": {
+    "prior_spec": "deploy-receipts/cypen-ai-app-spec-before-cutover-20261118.json",
+    "procedure": "doctl apps update 14868dd5-2c53-4778-a96c-970582d038ad --spec <prior_spec> && doctl apps create-deployment 14868dd5-2c53-4778-a96c-970582d038ad"
+  },
+  "notes": [
+    "No live HubSpot submission was fired against production CRM during verification",
+    "cypen.dev (cypen-dev-marketing, auto deploy on push) also picked up the new page via the push; its DO-side app spec has no build-time HubSpot envs yet, so the form there runs in warn-only mode until those are added",
+    "Pre-existing cypen.ai envs for report form GUID, Turnstile, OpenComputer webhooks retained runtime-only; unused by the static site"
+  ],
+  "followups": [
+    {
+      "date": "2026-11-18",
+      "change": "styled 404 page + email-only HubSpot form correction",
+      "commits": [
+        "762a4e6 styled 404 page matching site design + nginx error page",
+        "82933bb fix: point waitlist form at email-only HubSpot form 34180e11"
+      ],
+      "app_env_change": "HUBSPOT_FORM_GUID 203cd2ab-161b-4dcf-87d7-eb3a3370df7d -> 34180e11-076b-4621-ad94-a6e77d2c6218 (RUN_AND_BUILD_TIME)",
+      "reason": "203cd2ab is the landing-page contact form and rejects email-only submissions (REQUIRED_FIELD firstname/message); 34180e11 accepts bare email",
+      "final_deployment_id": "e31de87d-aeac-41e3-8ee5-49651a86e04d",
+      "final_deployment_phase": "ACTIVE",
+      "verification_404": "https://cypen.ai/does-not-exist -> HTTP 404, title 'Page not found \u00b7 Cypen', site-styled dark page with navbar, violet separators, purple scramble, Back to top CTA; local docker test same; direct /404.html returns 404 status (internal)",
+      "verification_form": "live page bakes formGuid 34180e11; test submission waitlist-cutover-test-20261118@cypen.ai returned 200 and created HubSpot contact 376307361 in portal 443548264 at 2026-11-18T00:36:55Z",
+      "intermediate_deployments": [
+        "1fd912cf-436b-4d98-ab15-82b53b6e0b73 (bound 2da4995)",
+        "749c3fc9-65d6-4755-a498-e2cc56209d9f (404, still old form GUID)"
+      ]
+    },
+    {
+      "date": "2026-11-18",
+      "change": "legal pages, terms PDF, footer links, copy fix",
+      "commits": [
+        "4ef5857 copy: alert title 'Broken Access Control' -> 'Access Control'",
+        "899d192 feat: privacy policy, trust centre, terms PDF and footer legal links"
+      ],
+      "deployment_id": "e2a89284-89b0-4ff9-9dc8-a4dfcfd9cd55",
+      "deployment_phase": "ACTIVE",
+      "verification": {
+        "/privacy": "200, 'Privacy Policy | Cypen', 12 sections, dark site styling",
+        "/trust": "200, 'Trust Centre | Cypen', 12 sections incl. FAQ",
+        "/terms.pdf": "200 application/pdf (261086 bytes, from cypen-main-website public)",
+        "footer": "PRIVACY POLICY / TERMS / TRUST CENTRE / INFO@CYPEN.AI beside social icons; Cloudflare email obfuscation decodes to mailto:info@cypen.ai in browser",
+        "copy": "alert title 'Access Control' live; /404 keeps HTTP 404 status via explicit location"
+      }
+    }
+  ]
+}

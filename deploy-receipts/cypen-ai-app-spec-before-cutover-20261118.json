@@ -1,0 +1,157 @@
+{
+  "name": "cypen-main-website",
+  "services": [
+    {
+      "name": "web",
+      "github": {
+        "repo": "cypen-ai/cypen-main-website",
+        "branch": "main"
+      },
+      "dockerfile_path": "Dockerfile",
+      "instance_size_slug": "apps-s-1vcpu-0.5gb",
+      "instance_count": 1,
+      "http_port": 3000,
+      "health_check": {
+        "initial_delay_seconds": 15,
+        "period_seconds": 10,
+        "timeout_seconds": 5,
+        "success_threshold": 1,
+        "failure_threshold": 3,
+        "http_path": "/healthz",
+        "port": 3000
+      },
+      "alerts": [
+        {
+          "rule": "RESTART_COUNT",
+          "operator": "GREATER_THAN",
+          "value": 3,
+          "window": "TEN_MINUTES"
+        }
+      ]
+    }
+  ],
+  "domains": [
+    {
+      "domain": "cypen.ai",
+      "type": "PRIMARY",
+      "zone": "cypen.ai"
+    },
+    {
+      "domain": "www.cypen.ai",
+      "type": "ALIAS",
+      "zone": "cypen.ai"
+    },
+    {
+      "domain": "agenticsecurity.au",
+      "type": "ALIAS",
+      "wildcard": true
+    },
+    {
+      "domain": "agenticsecurity.com.au",
+      "type": "ALIAS",
+      "wildcard": true
+    }
+  ],
+  "region": "syd",
+  "envs": [
+    {
+      "key": "HUBSPOT_PORTAL_ID",
+      "value": "443548264",
+      "scope": "RUN_TIME"
+    },
+    {
+      "key": "HUBSPOT_FORM_GUID",
+      "value": "203cd2ab-161b-4dcf-87d7-eb3a3370df7d",
+      "scope": "RUN_TIME"
+    },
+    {
+      "key": "HUBSPOT_REPORT_FORM_GUID",
+      "value": "34180e11-076b-4621-ad94-a6e77d2c6218",
+      "scope": "RUN_TIME"
+    },
+    {
+      "key": "HUBSPOT_FORMS_HOST",
+      "value": "api-ap1.hsforms.com",
+      "scope": "RUN_TIME"
+    },
+    {
+      "key": "TURNSTILE_SITE_KEY",
+      "value": "0x4AAAAAAFY-z1knvVO8CASQ",
+      "scope": "RUN_TIME"
+    },
+    {
+      "key": "TURNSTILE_HOSTNAMES",
+      "value": "cypen.ai",
+      "scope": "RUN_TIME"
+    },
+    {
+      "key": "TURNSTILE_SECRET_KEY",
+      "value": "EV[1:291IP3VSzBRW6sQdMyf4hYLVmyB3XqDD:zXtOcvxoNnINJ3OAULKeOUVkfL6rYY8ZdOQbRLB3Deo52B4ZMKiylc5iB/ebcJocb1CY]",
+      "scope": "RUN_TIME",
+      "type": "SECRET"
+    },
+    {
+      "key": "OPENCOMPUTER_LEADS_WEBHOOK_ID",
+      "value": "wh_82b88bbfad4d4f76a6e13640acd05843",
+      "scope": "RUN_TIME"
+    },
+    {
+      "key": "OPENCOMPUTER_LEADS_WEBHOOK_TOKEN",
+      "value": "EV[1:vqnJxAgShsigiRAH1faGy8UwC6jCgc5r:S4vqygcVBCrOEBs3Hp0JYEzIURLSrdSxG2fQ5ounPf8Tx5pzX0QeoFBzeAJBWZmqXmWExGGYsV3P5b5lVgbM1Q==]",
+      "scope": "RUN_TIME",
+      "type": "SECRET"
+    },
+    {
+      "key": "NEXT_PUBLIC_POSTHOG_HOST",
+      "value": "https://us.i.posthog.com",
+      "scope": "RUN_AND_BUILD_TIME"
+    },
+    {
+      "key": "NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN",
+      "value": "phc_CcL66ZYHkUCZDs8rMQdieikPEk88sWVkhJVrQT22hAhj",
+      "scope": "RUN_AND_BUILD_TIME"
+    }
+  ],
+  "alerts": [
+    {
+      "rule": "DEPLOYMENT_FAILED"
+    },
+    {
+      "rule": "DEPLOYMENT_LIVE"
+    },
+    {
+      "rule": "DOMAIN_FAILED"
+    }
+  ],
+  "ingress": {
+    "rules": [
+      {
+        "match": {
+          "path": {
+            "prefix": "/"
+          },
+          "authority": {
+            "exact": "www.cypen.ai"
+          }
+        },
+        "redirect": {
+          "authority": "cypen.ai",
+          "redirect_code": 301
+        }
+      },
+      {
+        "match": {
+          "path": {
+            "prefix": "/"
+          }
+        },
+        "component": {
+          "name": "web"
+        }
+      }
+    ]
+  },
+  "features": [
+    "buildpack-stack=ubuntu-22"
+  ]
+}

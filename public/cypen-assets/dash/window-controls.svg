@@ -1,0 +1,24 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="648.172" height="41.0687" viewBox="0 0 648.172 41.0687" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Window controls" opacity="0.4">
+<g clip-path="url(#clip0_0_54)">
+<mask id="path-1-inside-1_0_54" fill="white">
+<path d="M0 0H648.172V41.0687H0V0Z"/>
+</mask>
+<path d="M0 0H648.172V41.0687H0V0Z" fill="url(#paint0_linear_0_54)"/>
+<rect id="Header divider" y="47.3125" width="648.172" height="1.07136" fill="#313131"/>
+<circle id="Close" cx="24.9861" cy="21.4236" r="6.24959" stroke-width="1.7856" stroke="#353535"/>
+<circle id="Minimize" cx="46.4236" cy="21.4236" r="7.14239" fill="#353535"/>
+<circle id="Expand" cx="67.8455" cy="21.4236" r="7.14239" fill="#353535"/>
+</g>
+<path d="M648.172 41.0687V40.1759H0V41.0687V41.9615H648.172V41.0687Z" fill="#323232" mask="url(#path-1-inside-1_0_54)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_54" x1="324.086" y1="0" x2="324.086" y2="41.0687" gradientUnits="userSpaceOnUse">
+<stop stop-color="#1D1D1D"/>
+<stop offset="1" stop-color="#141414"/>
+</linearGradient>
+<clipPath id="clip0_0_54">
+<path d="M0 0H648.172V41.0687H0V0Z" fill="white"/>
+</clipPath>
+</defs>
+</svg>

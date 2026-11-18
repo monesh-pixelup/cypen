@@ -1,0 +1,96 @@
+import React, { useEffect, useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import { flushSync } from 'react-dom';
+import { Tabs } from 'radix-ui';
+import { Shuffle, Download, Check, RotateCcw, CornerDownLeft, GitBranch, Waves, Layers, CircleDot, Hexagon, Scan, ArrowUpRight, Orbit, Fingerprint, Wind, Sprout, Sparkles } from 'lucide-react';
+import { ColorPicker } from './color-picker';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+// The renderer remains the single source of truth. Native selects retain their
+// values and change events; these small React roots provide the accessible UI.
+function StudioSelect({ target, label, className = '' }: {target: string; label: string; className?: string}) {
+  const native = document.getElementById(target) as HTMLSelectElement;
+  const [value, setValue] = useState(native.value);
+  const [disabled, setDisabled] = useState(native.disabled);
+  useEffect(() => {
+    const sync = () => { setValue(native.value); setDisabled(native.disabled); };
+    const observer = new MutationObserver(sync);
+    observer.observe(native, { attributes: true, attributeFilter: ['disabled'] });
+    document.addEventListener('glyph-field:sync', sync);
+    native.addEventListener('change', sync);
+    return () => { observer.disconnect(); document.removeEventListener('glyph-field:sync', sync); native.removeEventListener('change', sync); };
+  }, [native]);
+  return <Select value={value} disabled={disabled} onValueChange={next => {
+    native.value = next; setValue(next); native.dispatchEvent(new Event('change', {bubbles:true}));
+  }}>
+    <SelectTrigger aria-label={label} className={`studio-select ${className}`}><SelectValue /></SelectTrigger>
+    <SelectContent position="popper" sideOffset={6} className="studio-select-menu">
+      {Array.from(native.options).map(option => <SelectItem key={option.value} value={option.value}>{option.textContent}</SelectItem>)}
+    </SelectContent>
+  </Select>;
+}
+function TransparencyControl() {
+  const native=document.getElementById('transparent-background') as HTMLInputElement;
+  const [checked,setChecked]=useState(native.checked);
+  useEffect(()=>{const sync=()=>setChecked(native.checked);document.addEventListener('glyph-field:sync',sync);return ()=>document.removeEventListener('glyph-field:sync',sync);},[native]);
+  return <div className="transparency-control"><div><span id="transparency-label">Transparent background</span><p>PNG & SVG exports</p></div><Button variant="ghost" role="switch" aria-labelledby="transparency-label" aria-checked={checked} className="transparency-switch" onClick={()=>{native.checked=!checked;setChecked(native.checked);native.dispatchEvent(new Event('change',{bubbles:true}));}}><span/></Button></div>;
+}
+function Toolbar() {
+  return <>
+    <Button id="generate" variant="ghost" className="generate" aria-label="New composition"><Shuffle aria-hidden="true"/>Shuffle<kbd>Space</kbd></Button>
+    <div className="export-controls">
+      <StudioSelect target="export-format" label="Export format" className="format-select" />
+      <Button id="download" className="export" data-state="idle" aria-label="Export artwork">
+        <span className="export-face export-idle" aria-hidden="true"><Download/>Export</span>
+        <span className="export-face export-busy" aria-hidden="true">Preparing</span>
+        <span className="export-face export-done" aria-hidden="true"><Check/>Exported</span>
+      </Button>
+    </div>
+  </>;
+}
+function mount(id: string, element: React.ReactNode) {
+  const target = document.getElementById(id);
+  if (target) flushSync(() => createRoot(target).render(element));
+}
+// Keep panels mounted so native renderer bridges, picker state, and DialKit
+// survive navigation. Radix owns tab semantics, roving focus, and arrow keys.
+const inspectorPanels = ['pattern', 'colors', 'canvas'].map(value => ({
+  value,
+  html: document.querySelector(`[data-inspector-panel="${value}"]`)!.innerHTML,
+}));
+mount('inspector', <Tabs.Root defaultValue="pattern" className="inspector-tabs">
+  <Tabs.List className="inspector-nav" aria-label="Composition controls">
+    {inspectorPanels.map(({value}) => <Tabs.Trigger key={value} value={value} className="inspector-tab">{value[0].toUpperCase() + value.slice(1)}</Tabs.Trigger>)}
+  </Tabs.List>
+  {inspectorPanels.map(({value, html}) => <Tabs.Content key={value} value={value} forceMount className="inspector-panel" dangerouslySetInnerHTML={{__html: html}}/>)}
+</Tabs.Root>);
+mount('toolbar', <Toolbar/>);
+mount('palette', <ColorPicker/>);
+mount('transparency-control', <TransparencyControl/>);
+mount('background-picker', <ColorPicker kind="background"/>);
+mount('glyph-picker', <ColorPicker kind="glyph"/>);
+for (const i of [1, 2, 3, 4]) mount(`series${i}-picker`, <ColorPicker kind={`series${i}`} label={`Series ${i}`}/>);
+mount('graph-style-select', <StudioSelect target="graph-style" label="Graph style"/>);
+mount('graph-profile-select', <StudioSelect target="graph-profile" label="Graph curve"/>);
+mount('graph-layout-select', <StudioSelect target="graph-layout" label="Graph layout"/>);
+mount('graph-dither-select', <StudioSelect target="graph-dither" label="Dither style"/>);
+mount('graph-cell-select', <StudioSelect target="graph-cell" label="Pixel cell"/>);
+mount('graph-edge-select', <StudioSelect target="graph-edge" label="Top edge"/>);
+mount('reset-graph-control', <Button id="reset-graph" variant="ghost" size="sm" className="texture-reset"><RotateCcw aria-hidden="true"/>Reset graph</Button>);
+mount('reset-colors-control', <Button id="reset-colors" variant="ghost" size="sm" className="texture-reset"><RotateCcw aria-hidden="true"/>Reset colors</Button>);
+mount('circle-layout-select', <StudioSelect target="circle-layout" label="Circle arrangement"/>);
+mount('circle-style-select', <StudioSelect target="circle-style" label="Circle motif"/>);
+mount('spiral-direction-select', <StudioSelect target="spiral-direction" label="Spiral direction"/>);
+mount('spiral-palette-control', <Button id="spiral-palette" variant="outline" size="sm" className="reference-palette">Use reference palette</Button>);
+mount('shape-select', <StudioSelect target="shape" label="Artwork shape"/>);
+mount('shape-fill-select', <StudioSelect target="shape-fill" label="Shape fill"/>);
+mount('ratio-select', <StudioSelect target="ratio" label="Canvas ratio"/>);
+mount('resolution-select', <StudioSelect target="resolution" label="Export size"/>);
+mount('reset-control', <Button id="reset" variant="ghost" size="sm" className="texture-reset"><RotateCcw aria-hidden="true"/>Reset texture</Button>);
+mount('seed-apply', <Button id="apply-seed" variant="ghost" size="icon" aria-label="Apply seed"><CornerDownLeft aria-hidden="true"/></Button>);
+const icons = { GitBranch, Waves, Layers, CircleDot, Hexagon, Scan, ArrowUpRight, Orbit, Fingerprint, Wind, Sprout, Sparkles };
+for (const element of document.querySelectorAll<HTMLElement>('[data-icon]')) {
+  const Icon = icons[element.dataset.icon as keyof typeof icons];
+  if (Icon) flushSync(() => createRoot(element).render(<Icon aria-hidden="true" size={18} strokeWidth={1.5}/>));
+}

@@ -1,0 +1,69 @@
+# Source manifest for the existing cypen-dev-marketing App Platform resource.
+# The resource name is stable because DNS and alerts are already attached to it.
+name: cypen-dev-marketing
+region: syd
+domains:
+  - domain: cypen.dev
+    type: PRIMARY
+    zone: cypen.dev
+  - domain: www.cypen.dev
+    type: ALIAS
+    zone: cypen.dev
+features:
+  - buildpack-stack=ubuntu-22
+alerts:
+  - rule: DEPLOYMENT_FAILED
+  - rule: DEPLOYMENT_LIVE
+  - rule: DOMAIN_FAILED
+ingress:
+  rules:
+    - match:
+        authority:
+          exact: www.cypen.dev
+        path:
+          prefix: /
+      redirect:
+        authority: cypen.dev
+        redirect_code: 301
+    - component:
+        name: web
+      match:
+        path:
+          prefix: /
+services:
+  - name: web
+    dockerfile_path: Dockerfile
+    github:
+      repo: cypen-ai/cypen-waitlist-website
+      branch: main
+      deploy_on_push: true
+    build_args:
+      - HUBSPOT_PORTAL_ID
+      - HUBSPOT_FORM_GUID
+      - HUBSPOT_FORMS_HOST
+    envs:
+      - key: HUBSPOT_PORTAL_ID
+        value: "443548264"
+        scope: BUILD_TIME
+      - key: HUBSPOT_FORM_GUID
+        value: "34180e11-076b-4621-ad94-a6e77d2c6218"
+        scope: BUILD_TIME
+      - key: HUBSPOT_FORMS_HOST
+        value: api-ap1.hsforms.com
+        scope: BUILD_TIME
+    health_check:
+      failure_threshold: 3
+      http_path: /healthz
+      initial_delay_seconds: 10
+      period_seconds: 10
+      port: 80
+      success_threshold: 1
+      timeout_seconds: 5
+    http_port: 80
+    instance_count: 1
+    instance_size_slug: apps-s-1vcpu-0.5gb
+    alerts:
+      - rule: RESTART_COUNT
+        operator: GREATER_THAN
+        value: 3
+        window: TEN_MINUTES
