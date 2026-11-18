@@ -24,7 +24,7 @@ There is no database, server-side form processing, analytics or backend.
 1. **Connect the waitlist form to HubSpot.** In `public/index.html`, find `const HUBSPOT={portalId:'',formGuid:''};` and fill in the portal ID and form GUID. The form posts the email to HubSpot's public Forms API, so no secret is needed. Until this is set, the form shows a success message but sends nothing. Never put a HubSpot private-app token in this file.
 2. **Licence the fonts for web use.** `public/cypen-assets/fonts/` contains Roobert and Season Sans **trial** builds, plus Paper Mono and PP Mori. Trial fonts aren't licensed for a public website. Buy web licences and swap in the licensed files, keeping the same file names, or update the `@font-face` rules at the top of `public/index.html`.
 3. **Privacy policy.** The Figma design has no privacy policy link. A form that collects emails should normally link to one.
-4. **Share image URL.** The social share card (`public/cypen-assets/og-image.png`, 1200×630, from Figma `591:3351`) is linked with a relative path in the `og:image` and `twitter:image` tags in `public/index.html`. Change both to the full URL on the live domain, or link previews on Slack, LinkedIn, X and WhatsApp won't show the image.
+4. **Share image URL.** Done. The social share card (`public/cypen-assets/og-image.jpg`, 1200×630, a lighter copy of `og-image.png` from Figma `591:3351`) is linked with full `https://cypen-orpin.vercel.app/...` URLs (where the page is deployed now) in the `og:image` and `twitter:image` tags in `public/index.html`, because Slack, LinkedIn, X and WhatsApp ignore relative paths. If the site moves to another domain, update those URLs, `og:url` and the canonical link.
 
 ## Layout
 
@@ -56,7 +56,7 @@ The alert travel is desktop only. Everything is off for visitors with reduced mo
 | `public/index.html` | The page: markup, CSS and JS in one file |
 | `public/cypen-assets/*.webp, *.png, *.jpg` | Pattern artwork and textures exported from Figma. The paper textures have Figma's linear-burn blend baked in. |
 | `public/cypen-assets/made-heart.svg`, `pixelup-mark.svg` | The heart and the PixelUp mark in the footer's "Made with … by PIXELUPLABS" credit |
-| `public/cypen-assets/og-image.png` | Social share card (1200×630) |
+| `public/cypen-assets/og-image.jpg` | Social share card (1200×630), the file the share tags point to. `og-image.png` is the original export. |
 | `public/cypen-assets/dash/*.svg` | The Solution dashboard's layers from Figma. The window is built in HTML from these so it stays see-through, as in the design. |
 | `public/cypen-assets/*.svg` | Icons, logo mark and the Cypen wordmark |
 | `public/cypen-assets/fonts/` | Design fonts (see the licensing note above) |
