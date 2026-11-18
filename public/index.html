@@ -45,13 +45,13 @@ img{display:block}
 .abs{position:absolute}
 h1,h2{font-family:var(--display);font-weight:400}
 
-.page{position:relative;width:1440px;height:calc(3004px + var(--hx));margin:0 auto;zoom:var(--z,1)}
+.page{position:relative;width:1440px;height:calc(3145px + var(--hx));margin:0 auto;zoom:var(--z,1)}
 
 /* ---------- nav ---------- */
 .navbar{position:fixed;top:0;left:0;right:0;z-index:50;background:#111;transition:box-shadow .3s}
 .navbar.scrolled{box-shadow:0 1px 0 rgba(255,255,255,.06)}
-.nav{width:1440px;height:61px;margin:0 auto;padding:0 40px;display:flex;justify-content:space-between;align-items:center;zoom:var(--z,1)}
-[id]{scroll-margin-top:61px}
+.nav{width:1440px;height:57px;margin:0 auto;padding:3px 40px 0;display:flex;justify-content:space-between;align-items:center;zoom:var(--z,1)}
+[id]{scroll-margin-top:57px}
 .logo{display:flex;align-items:center;gap:4.48px;font:400 26.25px/1.2 var(--display);letter-spacing:-.525px;color:#fff}
 .logo img{width:22.63px;height:22.45px}
 .links{display:flex;align-items:flex-end;gap:26px}
@@ -62,17 +62,22 @@ h1,h2{font-family:var(--display);font-weight:400}
 /* ---------- hero ---------- */
 /* The hero fills the first screen. fit() sets --hx, the stage height added (or removed) so the Problem section starts at the bottom
    of the window, and --hs, which scales the pattern to cover the taller hero. Everything below shifts by --hx. */
-/* Hero artwork, two layers, both at Figma size and never scaled (so the pattern is the same height on every screen):
-   .wide  the pattern itself (Figma 669:15, 3212px wide), cut from its row 843 down. The frame 630:4 sits on it at 886,534, so it is placed
-          886px left of the frame and starts at the hero's row 309, where the pattern begins. It runs 886px past the stage on each side and
-          552px below the frame: wide windows see more pattern at the sides, tall ones more below.
-   .art   the frame 630:4 itself (pattern + code text, strips, plain top band), on top, exactly over the same pattern. Its last 40px fade out
-          so the overlays do not end on a hard line when the hero is taller than the frame.
-   .5px undoes the hero's own offset so both sit on whole pixels. */
-.hero{position:absolute;left:-.5px;top:61px;width:1441px;height:calc(721px*var(--hs));background:#1a1a1a;overflow:hidden;z-index:0}
+/* Hero artwork (Figma 630:4, 1441x1429, at page 0,57). It runs from under the nav to just above the Solution section; the Problem card
+   sits on top of it, so the pattern shows at the card's sides and in the band below it. Nothing is scaled, so the pattern is the same
+   height on every screen.
+   .pa/.pb  the pattern (Figma 669:13, 3492x1964) from the hero's row 309 down. It sits 1026px left of the frame, so wide windows see more
+            of it at the sides. .pa is pinned to the top (fixed distance under the copy). .pb is the same image pinned to the hero's bottom,
+            300px tall: when a taller window pushes the sections down (--hx), the band under the Problem card still has pattern. The two
+            meet behind the card, so the join only shows in the narrow strips beside it.
+   .art     the top 721 rows of the frame itself (pattern + code text, strips, plain top band), over the same pattern. Its last 40px fade
+            out so the overlays do not end on a hard line. */
+.hero{position:absolute;left:0;top:57px;width:1441px;height:calc(1429px + var(--hx));background:#1a1a1a;overflow:hidden;z-index:0}
 .hero img{position:absolute;max-width:none}
-.hero .wide{left:calc(.5px - 886px);top:309px;width:3212.5px;height:964px}
-.hero .art{left:.5px;top:0;width:1440px;height:721px;clip-path:inset(309px 0 0 0);--ef:min(var(--bw,0px),60px);
+.hero .pa,.hero .pb{position:absolute;left:-1026px;width:3492.5px;background-repeat:no-repeat;background-size:3492.5px 1121.5px}
+.hero .pa{top:309px;height:1121.5px}
+.hero .pb{bottom:-1.5px;height:300px;background-position:0 100%}
+@media(min-width:1180px){.hero .pa,.hero .pb{background-image:url(cypen-assets/hero-pattern-wide.webp)}}
+.hero .art{left:0;top:0;width:1440px;height:721px;clip-path:inset(309px 0 0 0);--ef:min(var(--bw,0px),60px);
  -webkit-mask-image:linear-gradient(#000 calc(100% - 40px),transparent),linear-gradient(90deg,transparent,#000 var(--ef),#000 calc(100% - var(--ef)),transparent);
  mask-image:linear-gradient(#000 calc(100% - 40px),transparent),linear-gradient(90deg,transparent,#000 var(--ef),#000 calc(100% - var(--ef)),transparent);
  -webkit-mask-composite:source-in;mask-composite:intersect}
@@ -80,13 +85,13 @@ h1,h2{font-family:var(--display);font-weight:400}
    separately so that on windows wider than the stage they sit at the window edges (--bw), as they sit at the frame edges in Figma.
    There the code text at the frame's sides also fades out over 60px (--ef) instead of ending on a hard line mid-screen. */
 .hero:before,.hero:after{content:"";position:absolute;top:0;height:309px;background:url(cypen-assets/hero-figma-630-4.webp) 0 0/1440px 721px no-repeat}
-.hero:before{left:calc(.5px - var(--bw,0px));width:28px}
-.hero:after{left:calc(1413.5px + var(--bw,0px));width:27px;background-position:-1413px 0}
+.hero:before{left:calc(0px - var(--bw,0px));width:28px}
+.hero:after{left:calc(1413px + var(--bw,0px));width:27px;background-position:-1413px 0}
 @media(min-width:1180px){.hero{overflow:visible;overflow-y:clip;clip-path:inset(0 calc(-1*var(--bw,0px)))}}
 .hero-copy{position:absolute;left:40px;top:103px;width:1359px;display:flex;justify-content:space-between;align-items:flex-end;z-index:5}
 .hero-copy .l{display:flex;flex-direction:column;gap:24px}
 .hero h1,.hero-copy h1{font-size:72px;line-height:1.1;letter-spacing:-1.44px;width:652.72px;color:#f7f7f7}
-.hero-copy .sub{font:400 16px/24px Geist,sans-serif;color:var(--mute);width:588.38px}
+.hero-copy .sub{font:400 16px/24px Geist,sans-serif;color:var(--mute);width:500.7px}
 .hero-copy .r{width:554px;position:relative}
 
 /* ---------- form (button: Figma 473:1003) ---------- */
@@ -184,7 +189,7 @@ h1,h2{font-family:var(--display);font-weight:400}
 .alert{transform:var(--tf)}
 
 /* ---------- problem ---------- */
-.problem{position:absolute;left:39.5px;top:calc(693px + var(--hx));width:1361px;height:718px;background:#111;overflow:hidden;z-index:2}
+.problem{position:absolute;left:39px;top:calc(693px + var(--hx));width:1361px;height:718px;background:#030303;overflow:hidden;z-index:2}
 .problem .tex{position:absolute;width:1515.87px;height:852.93px;opacity:.05;pointer-events:none}
 .problem .shade{position:absolute;left:271px;top:125.9px;width:851.8px;height:377.7px;background:#111;filter:blur(26.45px)}
 .problem .tile{position:absolute}
@@ -194,11 +199,13 @@ h1,h2{font-family:var(--display);font-weight:400}
 .problem p{margin-top:20px;font:400 16px/24px Geist,sans-serif;letter-spacing:-.32px;color:var(--mute);width:446.37px}
 
 /* ---------- solution ---------- */
-.solution{position:absolute;left:-3px;top:calc(1419px + var(--hx));width:1446px;height:801px;background:#111 url(cypen-assets/solution-paper.jpg) 0 0/100% 100%;overflow:hidden;z-index:1}
-.sol-head{position:absolute;left:43px;top:65px;width:1245px;display:flex;justify-content:space-between;align-items:flex-end}
+.solution{position:absolute;left:-3px;top:calc(1489px + var(--hx));width:1446px;height:801px;background:#111;overflow:hidden;z-index:1}
+/* the outlined frame around the illustration (Figma 567:3311): open at the bottom, where the section clips it */
+.solution:after{content:"";position:absolute;left:43.5px;top:294.5px;width:1309px;height:520px;border:1px solid rgba(255,255,255,.1);border-bottom:0;pointer-events:none}
+.sol-head{position:absolute;left:43px;top:65px;width:1303px;display:flex;justify-content:space-between;align-items:flex-end}
 .sol-head .label{margin-bottom:38px}
 .sol-head h2{font-size:52px;line-height:1.11;letter-spacing:-1.56px;width:575.77px;color:#fff}
-.sol-head p{font:400 16px/24px Geist,sans-serif;letter-spacing:-.32px;color:var(--mute);width:441.13px}
+.sol-head p{font:400 16px/24px Geist,sans-serif;letter-spacing:-.32px;color:var(--mute);width:497.4px}
 .ui{position:absolute;left:58px;top:323px;width:1280px;height:454px;scale:var(--uz,1);transform-origin:50% 45%}
 .ui>*{position:absolute;translate:0 0;transform:translate(calc(var(--px,0)*var(--d,0)*1px),calc(var(--py,0)*var(--d,0)*1px))}
 .js .ui>.drift{animation:drift var(--dur,13s) ease-in-out var(--dl,0s) infinite alternate}
@@ -213,18 +220,26 @@ h1,h2{font-family:var(--display);font-weight:400}
 .dash .chart{left:0;top:75px;width:330.336px;height:182.131px;opacity:.6;border:.893px solid #292929;background:linear-gradient(rgba(27,27,27,.4),rgba(25,25,25,.4));overflow:hidden}
 .dash .chart i{top:154.46px;height:8.928px;background:#252525}
 .dash .chart b{left:13.4px;top:9.82px;font:400 13.205px/normal var(--mono);color:#deded8;white-space:nowrap}
-.ui .navsel{left:261.23px;top:99.83px;width:94.64px;height:32.14px}
+/* selected sidebar item (Figma 556:2824), built from its layers so its faint outline and 70% fill match the design.
+   Figma's outline is .445px at 30%; a 1px line at 14% carries the same weight. */
+.ui .navsel{left:261.23px;top:99.83px;width:94.64px;height:32.14px;border:1px solid rgba(255,130,138,.14);background:linear-gradient(rgba(27,27,27,.7),rgba(25,25,25,.7));overflow:hidden}
+.navsel i{position:absolute}
+.navsel .b{inset:0;background:linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2)),#262626}
+.navsel .l{left:32.5px;top:11.05px;width:42.854px;height:8.035px;background:#282828}
+.navsel .ic{left:4.8px;top:5.7px;width:17.856px;height:17.856px;background:rgba(225,221,221,.2)}
 .ui .aud{left:896.48px;top:237.69px;width:113.71px;height:153.58px}
 .code{font:400 16.257px/1.168 var(--code);white-space:pre;pointer-events:none;color:transparent;-webkit-background-clip:text;background-clip:text}
-.ui .code{opacity:.4;background-image:radial-gradient(farthest-corner,rgba(0,0,0,0) 20%,rgba(0,0,0,.03) 40%,rgba(0,0,0,.11) 60%,rgba(0,0,0,.26) 80%,rgba(0,0,0,.5)),linear-gradient(var(--ga,238.4deg),#151c15 31.5%,#386d33 58.2%,#040404 86.4%)}
+/* Figma sets this text to 40% and then darkens it with a vignette effect; .27 is the measured match for the rendered result */
+.ui .code{opacity:.27;background-image:radial-gradient(farthest-corner,rgba(0,0,0,0) 20%,rgba(0,0,0,.03) 40%,rgba(0,0,0,.11) 60%,rgba(0,0,0,.26) 80%,rgba(0,0,0,.5)),linear-gradient(var(--ga,238.4deg),#151c15 31.5%,#386d33 58.2%,#040404 86.4%)}
 
 /* ---------- CTA + footer ---------- */
-.cta{position:absolute;left:0;top:calc(2216px + var(--hx));width:1440px;height:788px;background:#020202;overflow:hidden;z-index:4}
+.cta{position:absolute;left:0;top:calc(2357px + var(--hx));width:1440px;height:788px;background:#020202;overflow:hidden;z-index:4}
 .cta .plus{position:absolute;width:15.72px;height:15.72px}
 .cta .code{position:absolute;left:3px;top:329px;font-size:14.23px;opacity:.7;background-image:linear-gradient(239deg,#ad78d7 31.5%,#040404 86.4%);filter:drop-shadow(0 0 4px rgba(205,172,239,.35))}
-/* --paper-veil: a flat layer in the paper's own average colour (#171717) over the texture. Its alpha is how much the texture is toned down
-   (0 = full texture, 1 = flat); the card keeps the same overall brightness. */
-.panel{--paper-veil:rgba(23,23,23,.45);position:absolute;left:40px;top:85px;width:1244px;height:703px;background:linear-gradient(var(--paper-veil),var(--paper-veil)),#292929 url(cypen-assets/cta-paper.jpg) 0 0/100% 100%;overflow:hidden}
+/* --paper-veil: a flat layer in the paper's own average colour (#080808) over the texture. Its alpha is how much the texture is toned down
+   (0 = full texture as in Figma, 1 = flat); the card keeps the same overall brightness. The paper (cta-paper-v2.jpg) is the earlier
+   texture remapped to the tones of the current Figma card (fill #1f1f1f with Paper_03 burnt in). */
+.panel{--paper-veil:rgba(8,8,8,0);position:absolute;left:40px;top:85px;width:1244px;height:703px;background:linear-gradient(var(--paper-veil),var(--paper-veil)),#1f1f1f url(cypen-assets/cta-paper-v2.jpg) 0 0/100% 100%;overflow:hidden}
 .panel h2{position:absolute;left:28px;top:33px;width:500.7px;font-size:48px;line-height:1.11;letter-spacing:-1.44px;color:#fff}
 .panel .wm{position:absolute;left:-4px;top:413px;width:1159.02px;height:383.15px;pointer-events:none}
 .panel .fw{position:absolute;left:576px;top:98px;width:554px}
@@ -249,10 +264,8 @@ h1,h2{font-family:var(--display);font-weight:400}
    The stage stops scaling at 1920px wide. These bands sit behind each section and run past the stage edges,
    so on wider screens the section backgrounds reach the window edges while the content keeps its max width. */
 .bleed{position:absolute;left:-5000px;right:-5000px;z-index:-1;pointer-events:none}
-.bleed.b-hero{top:61px;height:calc(721px*var(--hs));background:#1a1a1a}
-/* one copy of the paper stretched across the whole window (fit() sets --bw, the stage units outside the stage on each side), so it has no seams */
-.bleed.b-sol{left:calc(-3px - var(--bw,0px));right:calc(-3px - var(--bw,0px));top:calc(1419px + var(--hx));height:801px;background:#111 url(cypen-assets/solution-paper.jpg) 0 0/100% 100%}
-@media(min-width:1180px){.solution{background:none}}
+.bleed.b-hero{top:57px;height:calc(1429px + var(--hx));background:#1a1a1a}
+/* the Solution section is flat #111, the page colour, so it needs no band */
 /* CTA: the orange patterns hug the window edges, not the stage edges. The section clips top and bottom only, out to the window edges. */
 @media(min-width:1180px){
  .cta{overflow:visible;overflow-y:clip;clip-path:inset(0 calc(-1*var(--bw,0px)))}
@@ -262,7 +275,7 @@ h1,h2{font-family:var(--display);font-weight:400}
  /* Problem card: same stretch. Its background reaches out by --bw each side; the textures already run past the card and are just clipped
     less, so the faint pattern fills the wider card. Text, tiles and alerts stay put. */
  .problem{background:none;overflow:visible;overflow-y:clip;clip-path:inset(0 calc(-1*var(--bw,0px)))}
- .problem:before{content:"";position:absolute;top:0;bottom:0;left:calc(-1*var(--bw,0px));right:calc(-1*var(--bw,0px));z-index:-1;background:#111;pointer-events:none}
+ .problem:before{content:"";position:absolute;top:0;bottom:0;left:calc(-1*var(--bw,0px));right:calc(-1*var(--bw,0px));z-index:-1;background:#030303;pointer-events:none}
  /* the panel's paper stretches out by the same amount on each side, so it keeps its margins to the window; its content stays put */
  .panel{background:none;overflow:visible;overflow-y:clip;clip-path:inset(0 calc(-1*var(--bw,0px)))}
  /* once the panel has stretched past the stage, its left column (heading, legal row) moves out 28px to the page's 40px text edge,
@@ -274,9 +287,9 @@ h1,h2{font-family:var(--display);font-weight:400}
  /* the waitlist form slides right as the panel stretches, until its right edge meets the nav links' right edge (stage x 1400, a 230px move).
     It gets there once the panel is 144px wider per side (about 2300px windows), which keeps at least 28px between the button and the panel edge. */
  .panel .fw{left:calc(576px + min(230px,var(--bw,0px)*1.6))}
- .panel:before{content:"";position:absolute;top:0;bottom:0;left:calc(-1*var(--bw,0px));right:calc(-1*var(--bw,0px));z-index:-1;background:linear-gradient(var(--paper-veil),var(--paper-veil)),#292929 url(cypen-assets/cta-paper.jpg) 0 0/100% 100%;pointer-events:none}
+ .panel:before{content:"";position:absolute;top:0;bottom:0;left:calc(-1*var(--bw,0px));right:calc(-1*var(--bw,0px));z-index:-1;background:linear-gradient(var(--paper-veil),var(--paper-veil)),#1f1f1f url(cypen-assets/cta-paper-v2.jpg) 0 0/100% 100%;pointer-events:none}
 }
-.bleed.b-cta{top:calc(2216px + var(--hx));height:788px;background:#020202}
+.bleed.b-cta{top:calc(2357px + var(--hx));height:788px;background:#020202}
 
 /* ---------- tablet + phone: stacked flow layout (below 1180px the 1440 stage would shrink type too far) ---------- */
 @media(max-width:1179px){
@@ -289,9 +302,10 @@ h1,h2{font-family:var(--display);font-weight:400}
  .hero-copy{position:relative;left:auto;top:auto;width:auto;max-width:880px;flex-direction:column;align-items:stretch;gap:40px;padding:72px 32px 0}
  .hero-copy h1{font-size:clamp(40px,8vw,72px);letter-spacing:-.02em;width:auto;max-width:680px}
  .hero-copy .sub{width:auto;max-width:560px;font-size:17px;line-height:26px}
+ .dbr{display:none}
  .hero-copy .r{width:auto;max-width:554px;margin-bottom:56px}
  .hero{position:relative;left:auto;top:auto;width:100%;height:var(--hh,auto);aspect-ratio:1441/470}
- .hero .wide,.hero:before,.hero:after{display:none}
+ .hero .pa,.hero .pb,.hero:before,.hero:after{display:none}
  .hero .art{top:auto;bottom:0;left:50%;width:150%;height:auto;translate:-50% 0;clip-path:none;-webkit-mask-image:none;mask-image:none}
  /* problem */
  .problem{position:relative;left:auto;top:auto;width:auto;height:auto;padding:104px 32px 96px;margin-top:-1px}
@@ -310,6 +324,7 @@ h1,h2{font-family:var(--display);font-weight:400}
  /* solution */
  .solution{position:relative;left:auto;top:auto;width:auto;height:auto;padding:104px 32px 0;background-size:cover;background-position:center}
  .sol-head{position:relative;left:auto;top:auto;width:auto;flex-direction:column;align-items:flex-start;gap:20px}
+ .solution:after{display:none}
  .sol-head h2{font-size:clamp(32px,6vw,52px);letter-spacing:-.03em;width:auto;max-width:600px}
  .sol-head p{width:auto;max-width:520px;font-size:17px;line-height:26px}
  .ui-clip{position:relative;height:calc(420px*var(--mz,.6));margin:56px -32px 0;overflow:hidden}
@@ -365,7 +380,7 @@ h1,h2{font-family:var(--display);font-weight:400}
 <!-- NAV (Figma 544:1442), fixed to the top -->
 <div class="navbar"><nav class="nav" aria-label="Main" data-rv="down">
  <a class="logo" href="#top"><img src="cypen-assets/logo-mark.svg" alt="">Cypen</a>
-<div class="links"><a href="#problem">PROBLEM</a><img src="cypen-assets/plus-violet.svg" alt=""><a href="#solution">SOLUTION</a><img src="cypen-assets/plus-violet.svg" alt=""><a href="#waitlist">JOIN WAITLIST</a></div>
+<div class="links"><a href="#problem">PROBLEM</a><img src="cypen-assets/plus-orange.svg" alt=""><a href="#solution">SOLUTION</a><img src="cypen-assets/plus-orange.svg" alt=""><a href="#waitlist">JOIN WAITLIST</a></div>
 </nav></div>
 
 <div class="page" id="page">
@@ -375,7 +390,7 @@ h1,h2{font-family:var(--display);font-weight:400}
 <div class="hero-copy" id="top">
  <div class="l">
   <h1>Continuous attack surface testing.</h1>
-  <p class="sub">Cypen finds everything you expose, safely tests the latest vulnerabilities, and gives you prioritised steps to remediate.</p>
+  <p class="sub">Cypen finds everything you expose, safely tests the <br class="dbr">latest vulnerabilities, and gives you prioritised steps to remediate.</p>
  </div>
  <div class="r">
   <form class="form" data-waitlist novalidate>
@@ -386,7 +401,7 @@ h1,h2{font-family:var(--display);font-weight:400}
  </div>
 </div>
 <header class="hero" aria-hidden="true">
- <picture><source media="(min-width:1180px)" srcset="cypen-assets/hero-pattern-wide.webp"><img class="wide" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" width="4096" height="1229"></picture>
+ <div class="pa"></div><div class="pb"></div>
  <img class="art" src="cypen-assets/hero-figma-630-4.webp" alt="" width="2880" height="1442" fetchpriority="high">
 </header>
 
@@ -433,8 +448,8 @@ h1,h2{font-family:var(--display);font-weight:400}
  </div>
  <div class="ui-clip"><div class="ui" aria-hidden="true">
   <div class="frame drift" style="--d:3;--dur:17s;--ax:3;--ay:2"></div>
-  <div class="code drift" data-code="full" style="left:5.13px;top:-70.54px;font-size:19.711px;--ga:238.39deg;--d:9;--dur:15s;--ax:-5;--ay:4;--dl:-3s"></div>
-  <div class="code drift" data-code="full" style="left:898.15px;top:137.66px;font-size:17.403px;--ga:239.25deg;--d:9;--dur:16s;--ax:5;--ay:-4;--dl:-7s"></div>
+  <div class="code drift" data-code="full" style="left:96.01px;top:-1.96px;font-size:14.526px;--ga:238.47deg;--d:9;--dur:15s;--ax:-5;--ay:4;--dl:-3s"></div>
+  <div class="code drift" data-code="full" style="left:897.15px;top:178.72px;font-size:13.05px;--ga:239.64deg;--d:9;--dur:16s;--ax:5;--ay:-4;--dl:-7s"></div>
   <svg class="drift" style="left:963.09px;top:28.75px;--d:12;--dur:11s;--ax:3;--ay:-4" width="5.41" height="20.31" viewBox="0 0 6.08 22.8"><circle cx="3.04" cy="3.04" r="3.04" fill="#1b1b1b"/><circle cx="3.04" cy="11.4" r="2.47" fill="none" stroke="#1b1b1b" stroke-width="1.14"/><circle cx="3.04" cy="19.77" r="2.47" fill="none" stroke="#1b1b1b" stroke-width="1.14"/></svg>
   <svg class="drift" style="left:858.47px;top:398.96px;--d:12;--dur:12s;--ax:-4;--ay:3;--dl:-2s" width="27.76" height="5.41" viewBox="0 0 31.17 6.08"><circle cx="3.04" cy="3.04" r="3.04" fill="#1b1b1b"/><circle cx="11.4" cy="3.04" r="3.04" fill="#1b1b1b"/><circle cx="19.77" cy="3.04" r="2.47" fill="none" stroke="#1b1b1b" stroke-width="1.14"/><circle cx="28.13" cy="3.04" r="2.47" fill="none" stroke="#1b1b1b" stroke-width="1.14"/></svg>
   <svg class="drift" style="left:289.71px;top:158.84px;--d:12;--dur:13s;--ax:3;--ay:4;--dl:-5s" width="5.41" height="27.76" viewBox="0 0 6.08 31.17"><circle cx="3.04" cy="3.04" r="3.04" fill="#1b1b1b"/><circle cx="3.04" cy="11.4" r="3.04" fill="#1b1b1b"/><circle cx="3.04" cy="19.77" r="2.47" fill="none" stroke="#1b1b1b" stroke-width="1.14"/><circle cx="3.04" cy="28.13" r="2.47" fill="none" stroke="#1b1b1b" stroke-width="1.14"/></svg>
@@ -460,7 +475,7 @@ h1,h2{font-family:var(--display);font-weight:400}
     <img src="cypen-assets/dash/growth-summary.svg" alt="" style="left:327.22px;top:1.34px;width:151.776px;height:57.139px">
    </div>
   </div>
-  <img class="navsel drift" src="cypen-assets/nav-selected.png" alt="" style="--d:14;--dur:10s;--ax:-6;--ay:3;--dl:-4s">
+  <div class="navsel drift" style="--d:14;--dur:10s;--ax:-6;--ay:3;--dl:-4s"><i class="b"></i><i class="l"></i><i class="ic"></i></div>
   <img class="aud drift" src="cypen-assets/audience.svg" alt="" style="--d:16;--dur:12s;--ax:6;--ay:-4;--dl:-1s">
   <div class="slot drift" data-slot="ex-b" style="left:64.86px;top:170.04px;width:187.33px;height:107.98px;--d:18;--dur:11s;--ax:-5;--ay:5;--dl:-2s"></div>
   <div class="slot drift" data-slot="ph-b" style="left:979.54px;top:82.73px;width:187.33px;height:107.98px;--d:18;--dur:12s;--ax:5;--ay:-5;--dl:-6s"></div>
@@ -695,7 +710,7 @@ document.querySelectorAll('[data-waitlist]').forEach(f=>{
  const finish=()=>{pops.forEach(e=>show(e));step=cards.length;done=true;locked=false;clearTimeout(idle)};
  if(REDUCE)finish();
  // scroll position where the section sits under the nav (nudged down a little on short windows so the bottom card is in view)
- const pinY=()=>Math.round(scrollY+prob.getBoundingClientRect().top-61*Z+Math.max(0,Math.min(718-(innerHeight/Z-61),70))*Z);
+ const pinY=()=>Math.round(scrollY+prob.getBoundingClientRect().top-57*Z+Math.max(0,Math.min(718-(innerHeight/Z-57),70))*Z);
  const hold=()=>scrollTo({top:pinY(),behavior:'instant'});
  const advance=()=>{
   if(step>=cards.length)return;

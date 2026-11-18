@@ -1,19 +1,19 @@
-<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="127.682" height="172.453" viewBox="0 0 127.682 172.453" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="113.708" height="153.579" viewBox="0 0 113.708 153.579" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g id="Audience distribution">
-<rect x="0.25" y="0.25" width="127.182" height="171.953" fill="url(#paint0_linear_0_34)" fill-opacity="0.7"/>
-<rect x="0.25" y="0.25" width="127.182" height="171.953" stroke="#9A5819" stroke-width="0.5"/>
-<path id="Distribution ring" d="M107.781 58.0469C107.781 80.0261 89.9636 97.8438 67.9844 97.8438C46.0052 97.8438 28.1875 80.0261 28.1875 58.0469C28.1875 36.0677 46.0052 18.25 67.9844 18.25C89.9636 18.25 107.781 36.0677 107.781 58.0469ZM47.688 58.0469C47.688 69.2563 56.775 78.3433 67.9844 78.3433C79.1938 78.3433 88.2808 69.2563 88.2808 58.0469C88.2808 46.8375 79.1938 37.7505 67.9844 37.7505C56.775 37.7505 47.688 46.8375 47.688 58.0469Z" fill="#361F40"/>
-<path id="Highlighted segment" d="M28.1875 58.0469C28.1875 47.4921 32.3804 37.3696 39.8437 29.9062C47.3071 22.4429 57.4296 18.25 67.9844 18.25V37.7505C62.6014 37.7505 57.439 39.8888 53.6327 43.6952C49.8263 47.5015 47.688 52.6639 47.688 58.0469L28.1875 58.0469Z" fill="#794190"/>
-<path id="Secondary segment" d="M65.4855 97.7652C55.3833 97.1296 45.9028 92.6685 38.9737 85.2897C32.0446 77.9109 28.1875 68.1691 28.1875 58.0469L47.688 58.0469C47.688 63.2092 49.6551 68.1775 53.1889 71.9407C56.7228 75.7039 61.5578 77.9791 66.71 78.3032L65.4855 97.7652Z" fill="#4E2A5D"/>
-<circle id="Legend dot 1" cx="18.2324" cy="119.404" r="4.97461" fill="#6A6A6A"/>
-<rect id="Legend label 1" x="31.5" y="116.078" width="67.9863" height="7.46191" fill="#282828"/>
-<circle id="Legend dot 2" cx="18.2324" cy="137.639" r="4.97461" fill="#585858"/>
-<rect id="Legend label 2" x="31.5" y="134.305" width="74.6191" height="7.46191" fill="#282828"/>
-<circle id="Legend dot 3" cx="18.2324" cy="155.881" r="4.97461" fill="#464646"/>
-<rect id="Legend label 3" x="31.5" y="152.555" width="54.7207" height="7.46191" fill="#282828"/>
+<rect width="113.708" height="153.579" fill="url(#paint0_linear_0_4)" fill-opacity="0.7"/>
+<rect x="0.222639" y="0.222639" width="113.262" height="153.134" stroke="#9A5819" stroke-opacity="0.5" stroke-width="0.445278"/>
+<path id="Distribution ring" d="M95.9843 51.6914C95.9843 71.2651 80.1166 87.1327 60.5429 87.1327C40.9692 87.1327 25.1016 71.2651 25.1016 51.6914C25.1016 32.1176 40.9692 16.25 60.5429 16.25C80.1166 16.25 95.9843 32.1176 95.9843 51.6914ZM42.4678 51.6914C42.4678 61.674 50.5603 69.7665 60.5429 69.7665C70.5255 69.7665 78.618 61.674 78.618 51.6914C78.618 41.7088 70.5255 33.6163 60.5429 33.6163C50.5603 33.6163 42.4678 41.7088 42.4678 51.6914Z" fill="#361F40"/>
+<path id="Highlighted segment" d="M25.1016 51.6914C25.1016 42.2917 28.8356 33.2771 35.4821 26.6305C42.1286 19.984 51.1433 16.25 60.5429 16.25V33.6163C55.7491 33.6163 51.1516 35.5206 47.7619 38.9103C44.3722 42.3001 42.4678 46.8975 42.4678 51.6914L25.1016 51.6914Z" fill="#794190"/>
+<path id="Secondary segment" d="M58.3175 87.0628C49.3209 86.4968 40.8781 82.5239 34.7073 75.9526C28.5365 69.3814 25.1016 60.7058 25.1016 51.6914L42.4678 51.6914C42.4678 56.2887 44.2196 60.7133 47.3667 64.0646C50.5138 67.4159 54.8197 69.4421 59.408 69.7308L58.3175 87.0628Z" fill="#4E2A5D"/>
+<circle id="Legend dot 1" opacity="0.5" cx="16.2349" cy="106.336" r="4.43017" fill="#6A6A6A"/>
+<rect id="Legend label 1" opacity="0.5" x="28.0547" y="103.375" width="60.5457" height="6.64525" fill="#282828"/>
+<circle id="Legend dot 2" opacity="0.5" cx="16.2349" cy="122.571" r="4.43017" fill="#585858"/>
+<rect id="Legend label 2" opacity="0.5" x="28.0547" y="119.602" width="66.4525" height="6.64525" fill="#282828"/>
+<circle id="Legend dot 3" opacity="0.5" cx="16.2349" cy="138.821" r="4.43017" fill="#464646"/>
+<rect id="Legend label 3" opacity="0.5" x="28.0547" y="135.859" width="48.7319" height="6.64525" fill="#282828"/>
 </g>
 <defs>
-<linearGradient id="paint0_linear_0_34" x1="63.8408" y1="0" x2="63.8408" y2="172.453" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint0_linear_0_4" x1="56.8539" y1="0" x2="56.8539" y2="153.579" gradientUnits="userSpaceOnUse">
 <stop stop-color="#1B1B1B"/>
 <stop offset="1" stop-color="#191919"/>
 </linearGradient>
