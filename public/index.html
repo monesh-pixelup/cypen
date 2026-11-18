@@ -222,7 +222,9 @@ h1,h2{font-family:var(--display);font-weight:400}
 .cta{position:absolute;left:0;top:calc(2216px + var(--hx));width:1440px;height:788px;background:#020202;overflow:hidden;z-index:4}
 .cta .plus{position:absolute;width:15.72px;height:15.72px}
 .cta .code{position:absolute;left:3px;top:329px;font-size:14.23px;opacity:.7;background-image:linear-gradient(239deg,#ad78d7 31.5%,#040404 86.4%);filter:drop-shadow(0 0 4px rgba(205,172,239,.35))}
-.panel{position:absolute;left:40px;top:85px;width:1244px;height:703px;background:#292929 url(cypen-assets/cta-paper.jpg) 0 0/100% 100%;overflow:hidden}
+/* --paper-veil: a flat layer in the paper's own average colour (#171717) over the texture. Its alpha is how much the texture is toned down
+   (0 = full texture, 1 = flat); the card keeps the same overall brightness. */
+.panel{--paper-veil:rgba(23,23,23,.45);position:absolute;left:40px;top:85px;width:1244px;height:703px;background:linear-gradient(var(--paper-veil),var(--paper-veil)),#292929 url(cypen-assets/cta-paper.jpg) 0 0/100% 100%;overflow:hidden}
 .panel h2{position:absolute;left:28px;top:33px;width:500.7px;font-size:48px;line-height:1.11;letter-spacing:-1.44px;color:#fff}
 .panel .wm{position:absolute;left:-4px;top:413px;width:1159.02px;height:383.15px;pointer-events:none}
 .panel .fw{position:absolute;left:576px;top:98px;width:554px}
@@ -272,7 +274,7 @@ h1,h2{font-family:var(--display);font-weight:400}
  /* the waitlist form slides right as the panel stretches, until its right edge meets the nav links' right edge (stage x 1400, a 230px move).
     It gets there once the panel is 144px wider per side (about 2300px windows), which keeps at least 28px between the button and the panel edge. */
  .panel .fw{left:calc(576px + min(230px,var(--bw,0px)*1.6))}
- .panel:before{content:"";position:absolute;top:0;bottom:0;left:calc(-1*var(--bw,0px));right:calc(-1*var(--bw,0px));z-index:-1;background:#292929 url(cypen-assets/cta-paper.jpg) 0 0/100% 100%;pointer-events:none}
+ .panel:before{content:"";position:absolute;top:0;bottom:0;left:calc(-1*var(--bw,0px));right:calc(-1*var(--bw,0px));z-index:-1;background:linear-gradient(var(--paper-veil),var(--paper-veil)),#292929 url(cypen-assets/cta-paper.jpg) 0 0/100% 100%;pointer-events:none}
 }
 .bleed.b-cta{top:calc(2216px + var(--hx));height:788px;background:#020202}
 
