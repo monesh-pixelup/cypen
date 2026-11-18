@@ -1,5 +1,5 @@
 <svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="126.777" height="308.908" viewBox="0 0 126.777 308.908" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Sidebar navigation" clip-path="url(#clip0_0_28)">
+<g id="Sidebar navigation" clip-path="url(#clip0_0_29)">
 <rect id="Navigation divider" x="125.516" y="7.14062" width="1.24992" height="301.766" fill="#1D1D1D"/>
 <rect id="Navigation icon 2" opacity="0.6" x="24.1016" y="76.7812" width="16.9632" height="16.9632" fill="#2B2B2B"/>
 <rect id="Navigation label 2" opacity="0.7" x="50.8828" y="82.1406" width="42.8543" height="8.03519" fill="#262626"/>
@@ -11,20 +11,12 @@
 <rect id="Navigation label 5" opacity="0.7" x="50.8828" y="172.125" width="42.8543" height="8.03519" fill="#262626"/>
 <rect id="Navigation icon 6" opacity="0.6" x="24.1016" y="196.781" width="16.9632" height="16.9632" fill="#2B2B2B"/>
 <rect id="Navigation label 6" opacity="0.7" x="50.8828" y="202.141" width="42.8543" height="8.03519" fill="#262626"/>
-<g id="Ellipse 96" filter="url(#filter0_f_0_28)">
-<ellipse cx="3.5712" cy="152.669" rx="3.5712" ry="156.24" fill="#D9D9D9"/>
-</g>
 <g id="Frame 2147275388">
 </g>
 <circle id="Ellipse 31371" cx="27.8024" cy="275.365" r="9.45868" fill="#2B2B2B"/>
 </g>
 <defs>
-<filter id="filter0_f_0_28" x="-78.0306" y="-81.6009" width="163.204" height="468.541" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="39.0153" result="effect1_foregroundBlur_0_28"/>
-</filter>
-<clipPath id="clip0_0_28">
+<clipPath id="clip0_0_29">
 <rect width="126.777" height="308.908" fill="white"/>
 </clipPath>
 </defs>

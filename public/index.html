@@ -243,20 +243,21 @@ h1,h2{font-family:var(--display);font-weight:400}
 .panel h2{position:absolute;left:28px;top:33px;width:500.7px;font-size:48px;line-height:1.11;letter-spacing:-1.44px;color:#fff}
 .panel .wm{position:absolute;left:-4px;top:413px;width:1159.02px;height:383.15px;pointer-events:none}
 .panel .fw{position:absolute;left:576px;top:98px;width:554px}
-.panel .row{position:absolute;left:28px;top:364px;width:1102px;display:flex;justify-content:space-between;align-items:center}
+/* footer row, two stacks: left = copyright with the legal links under it; right = the credit with the social icons under it */
+.panel .row{position:absolute;left:28px;top:340px;width:1102px;display:flex;justify-content:space-between;align-items:flex-start}
 .panel .row p{font:400 14px/1.2 'PP Mori',Geist,sans-serif;letter-spacing:-.28px;color:var(--mute);white-space:nowrap}
-.panel .legal{display:flex;align-items:center;gap:81px}
+.panel .legal{display:flex;flex-direction:column;align-items:flex-start;gap:14px}
+.panel .credit{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.panel .credit .social{margin-right:-3.5px} /* the 17px icons sit in 24px boxes: pull the last one out to the credit's right edge */
 .panel .made{display:flex;align-items:center;gap:4px}
 /* underline drawn as a background line: the scramble splits the text into inline blocks, which text-decoration does not cross */
 .panel .made a{color:rgba(255,255,255,.8);padding:3px 0;background:linear-gradient(currentColor,currentColor) 0 100%/100% 1px no-repeat;background-size:0 1px}
 .panel .made a:hover,.panel .made a:focus-visible{background-size:100% 1px}
 .panel .made img{flex:none}
 .social{display:flex;gap:12px}.social a{display:flex;align-items:center;justify-content:center;width:24px;height:24px;color:rgba(255,255,255,.8);transition:color .2s}.social a:hover,.social a:focus-visible{color:#fff}.social svg{width:17px;height:17px;fill:currentColor}
-.foot-links{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+.foot-links{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .foot-links a{font:400 12px/1.2 var(--mono);letter-spacing:-.24px;color:rgba(255,255,255,.8);transition:color .2s}
 .foot-links a:hover{color:#fff}
-.foot-links .social a{display:flex;width:24px;height:24px;font:inherit}
-.foot-links .social{display:flex;gap:12px;margin-left:20px}
 .cta .pat{position:absolute;left:0;top:0;width:1440px;height:788px;pointer-events:none}
 .cta .pat-l{position:absolute;left:0;top:378px;width:419px;height:410px;pointer-events:none}
 
@@ -344,7 +345,8 @@ h1,h2{font-family:var(--display);font-weight:400}
  .panel h2{position:relative;left:auto;top:auto;width:auto;max-width:520px;font-size:clamp(32px,5.6vw,48px);letter-spacing:-.03em}
  .panel .fw{position:relative;left:auto;top:auto;width:auto;max-width:554px;margin:40px 0 72px}
  .panel .row{position:relative;left:auto;top:auto;width:auto;flex-wrap:wrap;gap:16px;order:8}
- .panel .legal{flex-wrap:wrap;gap:10px 40px}.panel .row p{white-space:normal}.panel .made{white-space:nowrap}
+ .panel .legal{gap:12px}.panel .row p{white-space:normal}.panel .made{white-space:nowrap}
+ .panel .credit{margin-left:auto} /* stays on the right edge, also when it wraps under the legal stack */
  .panel .wm{position:relative;left:auto;top:auto;order:9;width:calc(100% + 32px);height:auto;margin:48px 0 0 -16px} /* centred on the card: equal overhang into the padding each side */
  .cta .pat{left:auto;right:-12%;top:auto;bottom:0;width:90%;height:auto;opacity:.55;z-index:2}
 }
@@ -370,8 +372,9 @@ h1,h2{font-family:var(--display);font-weight:400}
  .panel{padding:28px 20px 0}
  .panel .fw{margin:32px 0 56px}
  .panel .wm{width:calc(100% + 16px);margin:40px 0 0 -8px}
- .foot-links{justify-content:flex-start;width:100%} /* phones: links and icons start on the same left edge as the legal text above */
- .foot-links .social{margin-left:0}
+ .panel .row{flex-direction:column;gap:22px} /* phones: one column, everything on the same left edge */
+ .panel .credit{align-items:flex-start;margin-left:0}
+ .panel .credit .social{margin-right:0;margin-left:-3.5px}
  .cta .pat{width:130%;right:-30%}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.js .ui>.drift{animation:none}.js .pop{transition:none!important}}
@@ -518,13 +521,15 @@ h1,h2{font-family:var(--display);font-weight:400}
   <footer class="row">
    <div class="legal">
     <p>© 2026 Agentic Security Pty Ltd (ABN 42 701 054 506). All rights reserved.</p>
-    <p class="made">Made with <img src="cypen-assets/made-heart.svg" alt="love" width="14.132" height="13.405"> by <a href="https://www.pixeluplabs.com/" target="_blank" rel="noopener">PIXELUPLABS</a> <img src="cypen-assets/pixelup-mark.svg" alt="" width="13.429" height="11.63"></p>
+    <div class="foot-links">
+     <a href="/privacy">PRIVACY POLICY</a>
+     <a href="/terms.pdf">TERMS</a>
+     <a href="/trust">TRUST CENTRE</a>
+     <a href="mailto:info@cypen.ai">INFO@CYPEN.AI</a>
+    </div>
    </div>
-   <div class="foot-links">
-    <a href="/privacy">PRIVACY POLICY</a>
-    <a href="/terms.pdf">TERMS</a>
-    <a href="/trust">TRUST CENTRE</a>
-    <a href="mailto:info@cypen.ai">INFO@CYPEN.AI</a>
+   <div class="credit">
+    <p class="made">Made with <img src="cypen-assets/made-heart.svg" alt="love" width="14.132" height="13.405"> by <a href="https://www.pixeluplabs.com/" target="_blank" rel="noopener">PIXELUPLABS</a> <img src="cypen-assets/pixelup-mark.svg" alt="" width="13.429" height="11.63"></p>
     <!-- Social icons: Font Awesome Free 6.7.2 (linkedin-in, x-twitter), CC BY 4.0, https://fontawesome.com/license/free -->
     <div class="social"><a href="https://www.linkedin.com/company/cypen/" target="_blank" rel="noopener" aria-label="Cypen on LinkedIn"><svg viewBox="0 0 448 512" aria-hidden="true"><path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"/></svg></a><a href="https://x.com/cypen" target="_blank" rel="noopener" aria-label="Cypen on X"><svg viewBox="0 0 512 512" aria-hidden="true"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg></a></div>
    </div>
